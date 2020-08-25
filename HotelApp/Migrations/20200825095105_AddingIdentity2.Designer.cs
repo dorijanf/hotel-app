@@ -4,14 +4,16 @@ using HotelApp.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelApp.API.Migrations
 {
     [DbContext(typeof(HotelAppContext))]
-    partial class HotelAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200825095105_AddingIdentity2")]
+    partial class AddingIdentity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,9 +108,6 @@ namespace HotelApp.API.Migrations
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RegisteredUserId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<int?>("ReservationStatusId")
                         .HasColumnType("int");
 
@@ -116,8 +115,6 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("RegisteredUserId");
 
                     b.HasIndex("ReservationStatusId");
 
@@ -186,9 +183,6 @@ namespace HotelApp.API.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -223,8 +217,6 @@ namespace HotelApp.API.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HotelId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -377,10 +369,6 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("HotelApp.API.Models.Reservation", b =>
                 {
-                    b.HasOne("HotelApp.API.Models.User", "RegisteredUser")
-                        .WithMany()
-                        .HasForeignKey("RegisteredUserId");
-
                     b.HasOne("HotelApp.API.Models.ReservationStatus", "ReservationStatus")
                         .WithMany("Reservations")
                         .HasForeignKey("ReservationStatusId");
@@ -394,13 +382,6 @@ namespace HotelApp.API.Migrations
                 {
                     b.HasOne("HotelApp.API.Models.Hotel", "Hotel")
                         .WithMany("Rooms")
-                        .HasForeignKey("HotelId");
-                });
-
-            modelBuilder.Entity("HotelApp.API.Models.User", b =>
-                {
-                    b.HasOne("HotelApp.API.Models.Hotel", null)
-                        .WithMany("Managers")
                         .HasForeignKey("HotelId");
                 });
 

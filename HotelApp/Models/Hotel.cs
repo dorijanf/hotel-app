@@ -16,6 +16,7 @@ namespace HotelApp.API.Models
         public string City { get; set; }
 
         public virtual HotelStatus Status { get; set; }
+        public virtual ICollection<User> Managers { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

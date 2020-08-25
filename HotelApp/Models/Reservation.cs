@@ -13,6 +13,7 @@ namespace HotelApp.API.Models
         public DateTime DateTo { get; set; }
         public string Note { get; set; }
 
-        public ReservationStatus ReservationStatus { get; set;  }
+        public virtual User RegisteredUser { get; set; }
+        public virtual ReservationStatus ReservationStatus { get; set;  }
     }
 }

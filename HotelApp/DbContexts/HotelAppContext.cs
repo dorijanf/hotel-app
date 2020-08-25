@@ -1,4 +1,5 @@
 ﻿using HotelApp.API.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HotelApp.API.DbContexts
 {
-    public class HotelAppContext : DbContext
+    public class HotelAppContext : IdentityDbContext<User, UserRole, string>
     {
 
         public HotelAppContext(DbContextOptions<HotelAppContext> options)
