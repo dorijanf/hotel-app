@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using HotelApp.API.DbContexts;
-using HotelApp.API.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -49,8 +48,6 @@ namespace HotelApp
 
             app.UseHttpsRedirection();
 
-            CreateRoles(serviceProvider).Wait();
-
             app.UseAuthentication();
 
             app.UseRouting();
@@ -61,23 +58,6 @@ namespace HotelApp
             { 
                 endpoints.MapControllers();
             });
-        }
-
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
-            string[] roleNames = { "SuperAdministrator", "Administrator", "Hotel Manager", "Registered User" };
-            IdentityResult roleResult;
-
-            foreach (var roleName in roleNames)
-            {
-                var roleExists = await RoleManager.RoleExistsAsync(roleName);
-                if(!roleExists)
-                {
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
         }
     }
 }

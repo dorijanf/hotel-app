@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelApp.API.Models
+namespace HotelApp.API.DbContexts
 {
-    public class UserRole : IdentityRole
+    public class User : IdentityUser
     {
-
+        public string UserRole { get; set; }
     }
 }

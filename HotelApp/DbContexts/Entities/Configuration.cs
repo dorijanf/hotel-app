@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace HotelApp.API.Models
+namespace HotelApp.API.DbContexts
 {
     public class Configuration
     {
