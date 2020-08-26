@@ -4,14 +4,16 @@ using HotelApp.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelApp.API.Migrations
 {
     [DbContext(typeof(HotelAppContext))]
-    partial class HotelAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200826075943_ConfiguringDatabaseConstraintsFixed")]
+    partial class ConfiguringDatabaseConstraintsFixed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace HotelApp.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Config", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Configuration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -336,28 +338,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "edfce7c5-563f-4344-8539-52bc1cc199f9",
+                            ConcurrencyStamp = "28801158-a0e0-46ec-b10f-940a6d548d9e",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "5de4ac57-e8e7-4a34-b619-40653c1454bb",
+                            ConcurrencyStamp = "8763ed5b-0079-4d82-b967-c760de95d791",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "5124a184-f099-4682-adff-edbd2e1b43cd",
+                            ConcurrencyStamp = "c10f6f93-591c-4d22-b13d-895b9edea161",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "7196d7b0-2d94-4bf1-aa3a-8e4011d45dbb",
+                            ConcurrencyStamp = "151b7af5-d9bb-4d39-86eb-c298c8d64070",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });

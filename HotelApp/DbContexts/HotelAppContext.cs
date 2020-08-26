@@ -22,7 +22,7 @@ namespace HotelApp.API.DbContexts
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationStatus> ReservationStatuses { get; set; }
-        public DbSet<Configuration> Configurations { get; set; }
+        public DbSet<Config> Configurations { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -162,7 +162,7 @@ namespace HotelApp.API.DbContexts
                     );
             });
 
-            modelBuilder.Entity<Configuration>(entity =>
+            modelBuilder.Entity<Config>(entity =>
             {
                 entity.HasKey(e => e.Id);
 
