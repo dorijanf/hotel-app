@@ -29,6 +29,30 @@ namespace HotelApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //var jwtSettings = new JwtSettings();
+            //Configuration.GetSection("Jwt").Bind(jwtSettings);
+            //services.AddSingleton<JwtSettings>(jwtSettings);
+            //services.AddScoped<ISettingsService, SettingsService>();
+            //services.AddAuthentication(x =>
+            //{
+            //    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            //    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            //})
+            //.AddJwtBearer(options =>
+            //{
+            //    options.RequireHttpsMetadata = false;
+            //    options.SaveToken = true;
+            //    options.TokenValidationParameters = new TokenValidationParameters
+            //    {
+            //        ValidateIssuerSigningKey = false,
+            //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
+            //        ValidateIssuer = false,
+            //        ValidateAudience = false,
+            //        //ValidIssuer = jwtSettings.Issuer, 
+            //        //ValidAudience = jwtSettings.Audience
+            //    };
+            //});
             services.AddDbContextPool<HotelAppContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("HotelAppDb"));

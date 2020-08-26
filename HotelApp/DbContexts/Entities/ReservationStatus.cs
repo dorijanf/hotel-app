@@ -8,7 +8,7 @@ namespace HotelApp.API.DbContexts.Entities
     public class ReservationStatus
     {
         public int Id { get; set; }
-        public ReservationStatusTypes Name { get; set; }
+        public string Name { get; set; }
         
         public virtual ICollection<Reservation> Reservations { get; set; }
     }

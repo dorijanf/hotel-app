@@ -9,7 +9,7 @@ namespace HotelApp.API.DbContexts.Entities
     public class HotelStatus
     {
         public int Id { get; set; }
-        public HotelStatusTypes Name { get; set; }
+        public string Name { get; set; }
         
         public virtual ICollection<Hotel> Hotels { get; set; }
     }

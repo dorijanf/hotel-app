@@ -92,8 +92,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -104,22 +105,22 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = 1,
-                            Name = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = 4
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = 2
+                            Name = "Active"
                         },
                         new
                         {
                             Id = 4,
-                            Name = 3
+                            Name = "Denied"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Inactive"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Pending"
                         });
                 });
 
@@ -173,8 +174,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("Name")
-                        .HasColumnType("int")
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
                     b.HasKey("Id");
@@ -184,23 +186,23 @@ namespace HotelApp.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = 1,
-                            Name = 2
-                        },
-                        new
-                        {
                             Id = 2,
-                            Name = 3
+                            Name = "Accepted"
                         },
                         new
                         {
                             Id = 3,
-                            Name = 1
+                            Name = "Denied"
+                        },
+                        new
+                        {
+                            Id = 1,
+                            Name = "Processing"
                         },
                         new
                         {
                             Id = 4,
-                            Name = 4
+                            Name = "Cancelled"
                         });
                 });
 
@@ -334,28 +336,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "9ee6cb7a-8ecb-4a01-aca8-03a2d8bb6462",
+                            ConcurrencyStamp = "28801158-a0e0-46ec-b10f-940a6d548d9e",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "2ba0042e-d487-41ea-97a7-0d42832ac110",
+                            ConcurrencyStamp = "8763ed5b-0079-4d82-b967-c760de95d791",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "49e85644-a4e7-4ccc-9fc9-fc874bc8047c",
+                            ConcurrencyStamp = "c10f6f93-591c-4d22-b13d-895b9edea161",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "6abc0bce-e0cc-4ce9-9091-e370c2f90792",
+                            ConcurrencyStamp = "151b7af5-d9bb-4d39-86eb-c298c8d64070",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });

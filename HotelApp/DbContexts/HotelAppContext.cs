@@ -83,10 +83,10 @@ namespace HotelApp.API.DbContexts
                     .HasForeignKey(s => s.StatusId);
 
                 entity.HasData(
-                    new HotelStatus { Id = 1, Name = HotelStatusTypes.Active },
-                    new HotelStatus { Id = 2, Name = HotelStatusTypes.Denied },
-                    new HotelStatus { Id = 3, Name = HotelStatusTypes.Inactive },
-                    new HotelStatus { Id = 4, Name = HotelStatusTypes.Pending }
+                    new HotelStatus { Id = (int) HotelStatusTypes.Active, Name = "Active"},
+                    new HotelStatus { Id = (int) HotelStatusTypes.Denied, Name = "Denied" },
+                    new HotelStatus { Id = (int) HotelStatusTypes.Inactive, Name = "Inactive" },
+                    new HotelStatus { Id = (int) HotelStatusTypes.Pending, Name = "Pending" }
                     );
             });
 
@@ -119,10 +119,10 @@ namespace HotelApp.API.DbContexts
                     .HasForeignKey(e => e.ReservationStatusId);
 
                 entity.HasData(
-                        new ReservationStatus { Id = 1, Name = ReservationStatusTypes.Accepted },
-                        new ReservationStatus { Id = 2, Name = ReservationStatusTypes.Denied },
-                        new ReservationStatus { Id = 3, Name = ReservationStatusTypes.Processing },
-                        new ReservationStatus { Id = 4, Name = ReservationStatusTypes.Cancelled }
+                        new ReservationStatus { Id = (int) ReservationStatusTypes.Accepted, Name = "Accepted" },
+                        new ReservationStatus { Id = (int) ReservationStatusTypes.Denied, Name = "Denied" },
+                        new ReservationStatus { Id = (int) ReservationStatusTypes.Processing, Name = "Processing" },
+                        new ReservationStatus { Id = (int) ReservationStatusTypes.Cancelled, Name = "Cancelled" }
                     );
             });
 
