@@ -4,14 +4,16 @@ using HotelApp.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelApp.API.Migrations
 {
     [DbContext(typeof(HotelAppContext))]
-    partial class HotelAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200825140400_AddingDatabaseConstraints")]
+    partial class AddingDatabaseConstraints
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -19,7 +21,7 @@ namespace HotelApp.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Configuration", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Configuration", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -43,7 +45,7 @@ namespace HotelApp.API.Migrations
                     b.ToTable("Configurations");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Hotel", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Hotel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -85,7 +87,7 @@ namespace HotelApp.API.Migrations
                     b.ToTable("Hotels");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.HotelStatus", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.HotelStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -109,22 +111,22 @@ namespace HotelApp.API.Migrations
                         },
                         new
                         {
-                            Id = 4,
-                            Name = "Denied"
-                        },
-                        new
-                        {
                             Id = 2,
-                            Name = "Inactive"
+                            Name = "Innactive"
                         },
                         new
                         {
                             Id = 3,
                             Name = "Pending"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Denied"
                         });
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Reservation", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Reservation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -167,7 +169,7 @@ namespace HotelApp.API.Migrations
                     b.ToTable("Reservations");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.ReservationStatus", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.ReservationStatus", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -186,6 +188,11 @@ namespace HotelApp.API.Migrations
                     b.HasData(
                         new
                         {
+                            Id = 1,
+                            Name = "Processing"
+                        },
+                        new
+                        {
                             Id = 2,
                             Name = "Accepted"
                         },
@@ -196,17 +203,12 @@ namespace HotelApp.API.Migrations
                         },
                         new
                         {
-                            Id = 1,
-                            Name = "Processing"
-                        },
-                        new
-                        {
                             Id = 4,
                             Name = "Cancelled"
                         });
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Room", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Room", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -236,7 +238,7 @@ namespace HotelApp.API.Migrations
                     b.ToTable("Rooms");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.User", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.User", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -291,6 +293,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<string>("UserRole")
+                        .HasColumnType("nvarchar(max)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HotelId");
@@ -306,7 +311,7 @@ namespace HotelApp.API.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.UserRole", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.UserRole", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
@@ -336,28 +341,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "28801158-a0e0-46ec-b10f-940a6d548d9e",
+                            ConcurrencyStamp = "ea148973-ea16-407e-99a3-02a0d7b29eb9",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "8763ed5b-0079-4d82-b967-c760de95d791",
+                            ConcurrencyStamp = "fd8a643c-2b25-4213-b66e-e4d8e828b35e",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "c10f6f93-591c-4d22-b13d-895b9edea161",
+                            ConcurrencyStamp = "45bababb-67af-482b-9144-8dfc3f3be65e",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "151b7af5-d9bb-4d39-86eb-c298c8d64070",
+                            ConcurrencyStamp = "cf58b8d7-c687-469b-a9d0-b0959f787d60",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });
@@ -467,51 +472,51 @@ namespace HotelApp.API.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Hotel", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Hotel", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.HotelStatus", "Status")
+                    b.HasOne("HotelApp.API.DbContexts.HotelStatus", "Status")
                         .WithMany("Hotels")
                         .HasForeignKey("StatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Reservation", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Reservation", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.User", "RegisteredUser")
+                    b.HasOne("HotelApp.API.DbContexts.User", "RegisteredUser")
                         .WithMany()
                         .HasForeignKey("RegisteredUserId");
 
-                    b.HasOne("HotelApp.API.DbContexts.Entities.ReservationStatus", "ReservationStatus")
+                    b.HasOne("HotelApp.API.DbContexts.ReservationStatus", "ReservationStatus")
                         .WithMany("Reservations")
                         .HasForeignKey("ReservationStatusId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelApp.API.DbContexts.Entities.Room", null)
+                    b.HasOne("HotelApp.API.DbContexts.Room", null)
                         .WithMany("Reservations")
                         .HasForeignKey("RoomId");
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Room", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.Room", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.Hotel", "Hotel")
+                    b.HasOne("HotelApp.API.DbContexts.Hotel", "Hotel")
                         .WithMany("Rooms")
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.User", b =>
+            modelBuilder.Entity("HotelApp.API.DbContexts.User", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.Hotel", null)
+                    b.HasOne("HotelApp.API.DbContexts.Hotel", null)
                         .WithMany("Managers")
                         .HasForeignKey("HotelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.UserRole", null)
+                    b.HasOne("HotelApp.API.DbContexts.UserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -520,7 +525,7 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.User", null)
+                    b.HasOne("HotelApp.API.DbContexts.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -529,7 +534,7 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.User", null)
+                    b.HasOne("HotelApp.API.DbContexts.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -538,13 +543,13 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.UserRole", null)
+                    b.HasOne("HotelApp.API.DbContexts.UserRole", null)
                         .WithMany()
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelApp.API.DbContexts.Entities.User", null)
+                    b.HasOne("HotelApp.API.DbContexts.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -553,7 +558,7 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.User", null)
+                    b.HasOne("HotelApp.API.DbContexts.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)

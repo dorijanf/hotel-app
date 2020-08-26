@@ -7,6 +7,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20200825065844_Initial.cs" />
     <Compile Remove="Migrations\20200825065844_Initial.Designer.cs" />
+    <Compile Remove="Migrations\20200826065048_ConfiguringDatabaseConstrainsFixed.cs" />
+    <Compile Remove="Migrations\20200826065048_ConfiguringDatabaseConstrainsFixed.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -21,6 +23,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 
