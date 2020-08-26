@@ -2,7 +2,6 @@ C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\bin\Debug\netcoreapp
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\appsettings.json
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\Properties\launchSettings.json
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\HotelApp.API.exe
-C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.csprojAssemblyReference.cache
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.AssemblyInfoInputs.cache
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.AssemblyInfo.cs
 C:\Users\dfabijanic\source\repos\HotelApp\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.RazorTargetAssemblyInfo.cache

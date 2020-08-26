@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using HotelApp.API.DbContexts.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -82,10 +83,10 @@ namespace HotelApp.API.DbContexts
                     .HasForeignKey(s => s.StatusId);
 
                 entity.HasData(
-                    new HotelStatus { Id = 1, Name = "Active" },
-                    new HotelStatus { Id = 2, Name = "Innactive" },
-                    new HotelStatus { Id = 3, Name = "Pending" },
-                    new HotelStatus { Id = 4, Name = "Denied" }
+                    new HotelStatus { Id = 1, Name = HotelStatusTypes.Active },
+                    new HotelStatus { Id = 2, Name = HotelStatusTypes.Denied },
+                    new HotelStatus { Id = 3, Name = HotelStatusTypes.Inactive },
+                    new HotelStatus { Id = 4, Name = HotelStatusTypes.Pending }
                     );
             });
 
@@ -118,10 +119,10 @@ namespace HotelApp.API.DbContexts
                     .HasForeignKey(e => e.ReservationStatusId);
 
                 entity.HasData(
-                        new ReservationStatus { Id = 1, Name = "Processing"},
-                        new ReservationStatus { Id = 2, Name = "Accepted" },
-                        new ReservationStatus { Id = 3, Name = "Denied" },
-                        new ReservationStatus { Id = 4, Name = "Cancelled" }
+                        new ReservationStatus { Id = 1, Name = ReservationStatusTypes.Accepted },
+                        new ReservationStatus { Id = 2, Name = ReservationStatusTypes.Denied },
+                        new ReservationStatus { Id = 3, Name = ReservationStatusTypes.Processing },
+                        new ReservationStatus { Id = 4, Name = ReservationStatusTypes.Cancelled }
                     );
             });
 
