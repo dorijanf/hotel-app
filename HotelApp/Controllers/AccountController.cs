@@ -92,7 +92,31 @@ namespace HotelApp.API.Controllers
 
         [Authorize(Roles = "SuperAdministrator")]
         [HttpPost]
-        [Route("register-admin")]
+        [Route("delete-admin/{username}")]
+        public async Task<ActionResult> DeleteAdministrator([FromRoute] string username)
+        {
+            var user = await _userManager.FindByNameAsync(username);
+            var userRoles = await _userManager.GetRolesAsync(user);
+
+            if(userRoles.Count() > 0)
+            {
+                foreach(var role in userRoles.ToList())
+                {
+                    var result = await _userManager.RemoveFromRoleAsync(user, role);
+                }
+            }
+
+            await _userManager.DeleteAsync(user);
+            return Ok(new ResponseDTO
+            {
+                Status = "Success",
+                Message = "Administrator deleted successfully!"
+            });
+        }
+
+        [Authorize(Roles = "SuperAdministrator")]
+        [HttpPost]
+        [Route("register-admin/{username}")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
