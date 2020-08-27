@@ -4,14 +4,16 @@ using HotelApp.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelApp.API.Migrations
 {
     [DbContext(typeof(HotelAppContext))]
-    partial class HotelAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200827132013_UserRoles")]
+    partial class UserRoles
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -335,31 +337,27 @@ namespace HotelApp.API.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
-                            ConcurrencyStamp = "3e243bc0-5fa3-4b3f-bba5-4b1a9097340c",
-                            Name = "SuperAdministrator",
-                            NormalizedName = "superadministrator"
+                            Id = "c14acbfd-4297-4929-a633-0edc727b755b",
+                            ConcurrencyStamp = "27983740-a0d1-46a1-b034-69252c0726fc",
+                            Name = "SuperAdministrator"
                         },
                         new
                         {
-                            Id = "2",
-                            ConcurrencyStamp = "c9ca6299-18c3-457d-855d-0af7bd6f04e6",
-                            Name = "Administrator",
-                            NormalizedName = "administrator"
+                            Id = "0aa74424-2aff-4073-a7cf-b6d1f8e76997",
+                            ConcurrencyStamp = "36afafd8-0c14-410a-b5c6-09d9d9d1561f",
+                            Name = "Administrator"
                         },
                         new
                         {
-                            Id = "3",
-                            ConcurrencyStamp = "f4cc5102-cf62-41c8-9ca4-3291e6bc5f71",
-                            Name = "Hotel manager",
-                            NormalizedName = "hotel manager"
+                            Id = "82c30897-af2c-49f1-a9d6-e40d642192e1",
+                            ConcurrencyStamp = "69932177-9db4-4f91-81a7-55353ba533cc",
+                            Name = "Hotel manager"
                         },
                         new
                         {
-                            Id = "4",
-                            ConcurrencyStamp = "7f8fa03b-7f37-4a9b-985d-2b7409a65ee1",
-                            Name = "Registered user",
-                            NormalizedName = "registered user"
+                            Id = "41c0e01c-cbcb-4c0a-8117-a6e84d9a2e2c",
+                            ConcurrencyStamp = "0b70aed0-b03e-4bc3-8e42-dcf57268c6e8",
+                            Name = "Registered user"
                         });
                 });
 

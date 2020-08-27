@@ -77,10 +77,10 @@ namespace HotelApp.API.Controllers
                                         Status = "Error",
                                         Message = "Cannot create user! Please check registration details and try again."
                                     });
+            await _userManager.AddToRoleAsync(user, "Registered user");
 
             if (await _roleManager.RoleExistsAsync("Registered user"))
             {
-                await _userManager.AddToRoleAsync(user, "Registered user");
             }
 
             return Ok(new ResponseDTO 
@@ -91,11 +91,11 @@ namespace HotelApp.API.Controllers
         }
 
         [Authorize(Roles = "SuperAdministrator")]
-        [HttpPost]
-        [Route("delete-admin/{username}")]
-        public async Task<ActionResult> DeleteAdministrator([FromRoute] string username)
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> DeleteAdministrator(string id)
         {
-            var user = await _userManager.FindByNameAsync(username);
+            var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
 
             if(userRoles.Count() > 0)
@@ -116,7 +116,7 @@ namespace HotelApp.API.Controllers
 
         [Authorize(Roles = "SuperAdministrator")]
         [HttpPost]
-        [Route("register-admin/{username}")]
+        [Route("register-admin")]
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
