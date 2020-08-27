@@ -22,13 +22,16 @@ namespace HotelApp.API.Controllers
     public class AccountController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
+        private readonly RoleManager<UserRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
 
         public AccountController(
                     UserManager<User> userManager,
+                    RoleManager<UserRole> roleManager,
                     JwtSettings jwtSettings)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
             _jwtSettings = jwtSettings;
         }
 
@@ -64,12 +67,7 @@ namespace HotelApp.API.Controllers
                                     });
             }
 
-            User user = new User()
-            {
-                Email = model.Email,
-                SecurityStamp = Guid.NewGuid().ToString(),
-                UserName = model.UserName
-            };
+            var user = CreateUser(model);
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
@@ -79,7 +77,66 @@ namespace HotelApp.API.Controllers
                                         Status = "Error",
                                         Message = "Cannot create user! Please check registration details and try again."
                                     });
-            return Ok(new ResponseDTO { Status = "Success", Message = "User created successfully!" });
+
+            if (await _roleManager.RoleExistsAsync("Registered user"))
+            {
+                await _userManager.AddToRoleAsync(user, "Registered user");
+            }
+
+            return Ok(new ResponseDTO 
+            { 
+                Status = "Success", 
+                Message = "User created successfully!" 
+            });
+        }
+
+        [Authorize(Roles = "SuperAdministrator")]
+        [HttpPost]
+        [Route("register-admin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDTO model)
+        {
+            var userExists = await _userManager.FindByNameAsync(model.UserName);
+            if(userExists != null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                    new ResponseDTO
+                                    {
+                                        Status = "Error",
+                                        Message = "User already exists!"
+                                    });
+            }
+            var user = CreateUser(model);
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (!result.Succeeded)
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                                    new ResponseDTO
+                                    {
+                                        Status = "Error",
+                                        Message = "Cannot create user! Please check registration details and try again."
+                                    });
+
+            if (await _roleManager.RoleExistsAsync("Administrator"))
+            {
+                await _userManager.AddToRoleAsync(user, "Administrator");
+            }
+
+            return Ok(new ResponseDTO { 
+                Status = "Success", 
+                Message = "Administrator created successfully!" 
+            });
+        }
+
+        private User CreateUser(RegisterUserDTO model)
+        {
+            var user = new User()
+            {
+                Email = model.Email,
+                SecurityStamp = Guid.NewGuid().ToString(),
+                UserName = model.UserName
+            };
+
+            return user;
         }
 
         private async Task<TokenResult> CreateTokenAsync(User user)
@@ -105,14 +162,6 @@ namespace HotelApp.API.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expires
             };
-        }
-
-        [Authorize]
-        [HttpGet]
-        [Route("test")]
-        public async Task<IActionResult> Test()
-        {
-            return Ok(new ResponseDTO { Status = "Success", Message = "Neka test poruka" });
         }
     }
 }

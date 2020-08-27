@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using HotelApp.API.Configuration;
 using HotelApp.API.DbContexts;
 using HotelApp.API.DbContexts.Entities;
+using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,16 +36,25 @@ namespace HotelApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options =>
+            {
+            }).AddFluentValidation();
 
+            // Validation services
+            services.AddTransient<IValidator<LoginUserDTO>, LoginUserDTOValidator>();
+            services.AddTransient<IValidator<RegisterUserDTO>, RegisterUserDTOValidator>();
+
+            // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>
             {
                 options.UseSqlServer(Configuration.GetConnectionString("HotelAppDb"));
             });
 
+            // Identity
             services.AddIdentity<User, UserRole>()
                 .AddEntityFrameworkStores<HotelAppContext>();
 
+            // JWT settings
             var jwtSettings = new JwtSettings();
             Configuration.GetSection("JwtSettings").Bind(jwtSettings);
             services.AddSingleton<JwtSettings>(jwtSettings);

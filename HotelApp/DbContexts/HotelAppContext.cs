@@ -155,10 +155,10 @@ namespace HotelApp.API.DbContexts
             modelBuilder.Entity<UserRole>(entity =>
             {
                 entity.HasData(
-                    new UserRole { Id = "1", Name = "SuperAdministrator", NormalizedName = "superadministrator" },
-                    new UserRole { Id = "2", Name = "Administrator", NormalizedName = "administrator" },
-                    new UserRole { Id = "3", Name = "Hotel manager", NormalizedName = "hotel manager" },
-                    new UserRole { Id = "4", Name = "Registered user", NormalizedName = "registered user" }
+                    new UserRole { Id = "SuperAdministrator", Name = "SuperAdministrator", NormalizedName = "superadministrator" },
+                    new UserRole { Id = "Administrator", Name = "Administrator", NormalizedName = "administrator" },
+                    new UserRole { Id = "Hotel manager", Name = "Hotel manager", NormalizedName = "hotel manager" },
+                    new UserRole { Id = "Registered user", Name = "Registered user", NormalizedName = "registered user" }
                     );
             });
 
