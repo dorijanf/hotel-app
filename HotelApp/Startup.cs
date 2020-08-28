@@ -8,6 +8,7 @@ using FluentValidation.AspNetCore;
 using HotelApp.API.Configuration;
 using HotelApp.API.DbContexts;
 using HotelApp.API.DbContexts.Entities;
+using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -43,6 +44,10 @@ namespace HotelApp
             // Validation services
             services.AddTransient<IValidator<LoginUserDTO>, LoginUserDTOValidator>();
             services.AddTransient<IValidator<RegisterUserDTO>, RegisterUserDTOValidator>();
+
+            // Repositories
+            services.AddScoped<IHotelRepository, HotelRepository>();
+            services.AddScoped<IHotelStatusRepository, HotelStatusRepository>();
 
             // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>
