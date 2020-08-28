@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dfabijanic\\source\\repos\\HotelApp\\HotelApp\\HotelApp\\HotelApp.API.csproj": {}
+    "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dfabijanic\\source\\repos\\HotelApp\\HotelApp\\HotelApp\\HotelApp.API.csproj": {
+    "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dfabijanic\\source\\repos\\HotelApp\\HotelApp\\HotelApp\\HotelApp.API.csproj",
+        "projectUniqueName": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj",
         "projectName": "HotelApp.API",
-        "projectPath": "C:\\Users\\dfabijanic\\source\\repos\\HotelApp\\HotelApp\\HotelApp\\HotelApp.API.csproj",
+        "projectPath": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj",
         "packagesPath": "C:\\Users\\dfabijanic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dfabijanic\\source\\repos\\HotelApp\\HotelApp\\HotelApp\\obj\\",
+        "outputPath": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\dfabijanic\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -38,6 +38,14 @@
       "frameworks": {
         "netcoreapp3.1": {
           "dependencies": {
+            "FluentValidation.AspNetCore": {
+              "target": "Package",
+              "version": "[9.2.0, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[3.1.7, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[3.1.7, )"

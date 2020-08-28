@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HotelApp.API.DbContexts.Entities
 {
-    public class Configuration
+    public class Config
     {
         public int Id { get; set; }
         public string Name { get; set; }

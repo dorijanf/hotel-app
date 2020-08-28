@@ -4,14 +4,16 @@ using HotelApp.API.DbContexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HotelApp.API.Migrations
 {
     [DbContext(typeof(HotelAppContext))]
-    partial class HotelAppContextModelSnapshot : ModelSnapshot
+    [Migration("20200826121746_ChangedNames")]
+    partial class ChangedNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -336,28 +338,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "3e243bc0-5fa3-4b3f-bba5-4b1a9097340c",
+                            ConcurrencyStamp = "01a4ad99-7e86-4c21-8ef3-9bbfec716881",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "c9ca6299-18c3-457d-855d-0af7bd6f04e6",
+                            ConcurrencyStamp = "938e7d28-4448-489e-b210-8fc84af788bd",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f4cc5102-cf62-41c8-9ca4-3291e6bc5f71",
+                            ConcurrencyStamp = "85adada8-d00f-4a70-ba19-e7b57c8cf291",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "7f8fa03b-7f37-4a9b-985d-2b7409a65ee1",
+                            ConcurrencyStamp = "570114b3-2ba1-481c-929d-4b005efb8f5e",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });
