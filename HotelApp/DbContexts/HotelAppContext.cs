@@ -23,6 +23,7 @@ namespace HotelApp.API.DbContexts
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<ReservationStatus> ReservationStatuses { get; set; }
         public DbSet<Config> Configurations { get; set; }
+        public DbSet<HotelUser> HotelUsers { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -62,9 +63,6 @@ namespace HotelApp.API.DbContexts
                 entity.HasMany(e => e.Rooms)
                     .WithOne(h => h.Hotel)
                     .HasForeignKey(e => e.HotelId);
-
-
-                entity.HasMany(e => e.Managers);
             });
 
             modelBuilder.Entity<HotelStatus>(entity =>
@@ -101,6 +99,15 @@ namespace HotelApp.API.DbContexts
                     .HasMaxLength(250);
 
                 entity.HasOne(e => e.RegisteredUser);
+            });
+
+            modelBuilder.Entity<HotelUser>(entity =>
+            {
+                entity.HasKey(hu => new
+                {
+                    hu.HotelId,
+                    hu.UserId
+                });
             });
 
             modelBuilder.Entity<ReservationStatus>(entity =>

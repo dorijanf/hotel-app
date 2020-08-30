@@ -132,6 +132,8 @@ C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\FluentValidation.dll
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\FluentValidation.AspNetCore.dll
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\FluentValidation.DependencyInjectionExtensions.dll
+C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\AutoMapper.dll
+C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.csproj.CoreCompileInputs.cache
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.MvcApplicationPartsAssemblyInfo.cs
 C:\Users\dfabijanic\source\repository\HotelApp\HotelApp\obj\Debug\netcoreapp3.1\HotelApp.API.MvcApplicationPartsAssemblyInfo.cache
