@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace HotelApp
 {
@@ -56,6 +57,8 @@ namespace HotelApp
             // Identity
             services.AddIdentity<User, UserRole>()
                 .AddEntityFrameworkStores<HotelAppContext>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<UserResolverService>();
 
             // JWT settings
             var jwtSettings = new JwtSettings();
