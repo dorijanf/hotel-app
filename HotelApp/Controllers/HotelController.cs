@@ -1,7 +1,4 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using HotelApp.API.DbContexts.Entities;
+﻿using System.Threading.Tasks;
 using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authorization;

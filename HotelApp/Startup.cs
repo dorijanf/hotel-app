@@ -47,6 +47,7 @@ namespace HotelApp
             // Repositories
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IHotelStatusRepository, HotelStatusRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
 
             // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>

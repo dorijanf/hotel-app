@@ -9,6 +9,7 @@ namespace HotelApp.API.Configuration
         public AutoMapping()
         {
             CreateMap<RegisterHotelDTO, Hotel>();
+            CreateMap<AddRoomDTO, Room>();
         }
     }
 }
