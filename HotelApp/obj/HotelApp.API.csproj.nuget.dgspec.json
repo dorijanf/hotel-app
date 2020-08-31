@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj": {}
+    "C:\\Dev\\HotelApp_Dorijan\\HotelApp\\HotelApp.API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj": {
+    "C:\\Dev\\HotelApp_Dorijan\\HotelApp\\HotelApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj",
+        "projectUniqueName": "C:\\Dev\\HotelApp_Dorijan\\HotelApp\\HotelApp.API.csproj",
         "projectName": "HotelApp.API",
-        "projectPath": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\HotelApp.API.csproj",
-        "packagesPath": "C:\\Users\\dfabijanic\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dfabijanic\\source\\repository\\HotelApp\\HotelApp\\obj\\",
+        "projectPath": "C:\\Dev\\HotelApp_Dorijan\\HotelApp\\HotelApp.API.csproj",
+        "packagesPath": "C:\\Users\\mpuzjak.SPAN\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\HotelApp_Dorijan\\HotelApp\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\dfabijanic\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\mpuzjak.SPAN\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -89,7 +92,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.301\\RuntimeIdentifierGraph.json"
         }
       }
     }
