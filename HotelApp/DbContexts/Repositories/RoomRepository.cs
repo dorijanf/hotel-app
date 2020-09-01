@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace HotelApp.API.DbContexts.Repositories
 {
@@ -48,6 +49,33 @@ namespace HotelApp.API.DbContexts.Repositories
         public Room GetRoomById(int id)
         {
             return _hotelAppContext.Rooms.Find(id);
+        }
+
+        public IEnumerable<Room> GetRooms(RoomParameters roomParameters, int? hotelId)
+        {
+            var rooms = _hotelAppContext.Set<Room>().AsQueryable();
+
+            if (roomParameters.City != null)
+            {
+                rooms = _hotelAppContext.Hotels.Where(h => h.City == roomParameters.City)
+                                               .SelectMany(r => r.Rooms);
+            }
+
+            if (roomParameters.NumberOfBeds > 0)
+            {
+                rooms = rooms.Where(r => r.NumberOfBeds == roomParameters.NumberOfBeds);
+            }
+
+            if (hotelId.HasValue)
+            {
+                return PagedList<Room>.ToPagedList(rooms
+                    .Where(r => r.HotelId == hotelId),
+                    roomParameters.PageNumber,
+                    roomParameters.PageSize);
+            }
+            return PagedList<Room>.ToPagedList(rooms,
+                roomParameters.PageNumber,
+                roomParameters.PageSize);
         }
     }
 }

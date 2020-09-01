@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using HotelApp.API.DbContexts.Entities;
 using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +13,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace HotelApp.API.Controllers
 {
+    [Route("api/[controller]")]
     [Route("api/{hotelId}/[controller]")]
     [ApiController]
     public class RoomsController : ControllerBase
@@ -60,6 +62,23 @@ namespace HotelApp.API.Controllers
                 Status = "Success",
                 Message = "Hotel room deleted successfully!"
             });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetRooms([FromRoute] int? hotelId, [FromQuery] RoomParameters roomParameters)
+        {
+            var rooms = _roomRepository.GetRooms(roomParameters, hotelId);
+            if (rooms.Count() < 1)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest,
+                                    new ResponseDTO
+                                    {
+                                        Status = "Error",
+                                        Message = "There aren't any rooms that satisfy your query."
+                                    });
+            }
+            return Ok(rooms);
         }
     }
 }
