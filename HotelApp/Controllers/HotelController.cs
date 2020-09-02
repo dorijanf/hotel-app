@@ -1,7 +1,4 @@
-﻿using System.Security.Claims;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using HotelApp.API.DbContexts.Entities;
+﻿using System.Threading.Tasks;
 using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,23 +11,17 @@ namespace HotelApp.API.Controllers
     public class HotelController : ControllerBase
     {
         private readonly IHotelRepository _hotelRepository;
-        private readonly IHotelStatusRepository _hotelStatusRepository;
 
-        public HotelController(IHotelRepository hotelRepository,
-                               IHotelStatusRepository hotelStatusRepository)
+        public HotelController(IHotelRepository hotelRepository)
         {
             _hotelRepository = hotelRepository;
-            _hotelStatusRepository = hotelStatusRepository;
         }
 
         [HttpPost]
         [Authorize(Roles = "Registered user")]
         public async Task<IActionResult> RegisterHotel([FromBody] RegisterHotelDTO model)
         {
-            ClaimsPrincipal currentUser = User;
-            await _hotelRepository.CreateHotelAsync(model,
-            _hotelStatusRepository.GetHotelStatusById((int)HotelStatusTypes.Pending),
-            currentUser);
+            await _hotelRepository.CreateHotelAsync(model);
 
             return Ok(new ResponseDTO
             {
@@ -42,14 +33,26 @@ namespace HotelApp.API.Controllers
         [HttpPut]
         [Authorize(Roles = "Hotel manager")]
         [Route("{id}")]
-        public async Task<IActionResult> EditHotel(int id, [FromBody] RegisterHotelDTO model)
+        public IActionResult UpdateHotel(int id, [FromBody] RegisterHotelDTO model)
         {
-            var hotel = _hotelRepository.GetHotelById(id);
-            await _hotelRepository.UpdateHotelAsync(model, hotel);
+            _hotelRepository.UpdateHotelAsync(id, model);
             return Ok(new ResponseDTO
             {
                 Status = "Success",
                 Message = "Hotel updated successfully!"
+            });
+        }
+
+        [HttpPut]
+        [Authorize(Roles ="SuperAdministrator, Administrator")]
+        [Route("{id}/status")]
+        public IActionResult UpdateHotelStatus(int id, [FromBody] int statusId)
+        {
+            _hotelRepository.UpdateHotelStatus(id, statusId);
+            return Ok(new ResponseDTO
+            {
+                Status = "Success",
+                Message = "Hotel status updated successfully!"
             });
         }
     }
