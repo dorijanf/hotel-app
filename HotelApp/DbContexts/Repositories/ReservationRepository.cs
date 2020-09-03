@@ -17,16 +17,19 @@ namespace HotelApp.API.DbContexts.Repositories
         private readonly IMapper _mapper;
         private readonly UserResolverService _userResolverService;
         private readonly UserManager<User> _userManager;
+        private readonly ISort<Reservation> _sort;
 
         public ReservationRepository(HotelAppContext hotelAppContext,
                                      IMapper mapper,
                                      UserResolverService userResolverService,
-                                     UserManager<User> userManager)
+                                     UserManager<User> userManager,
+                                     ISort<Reservation> sort)
         {
             _hotelAppContext = hotelAppContext;
             _mapper = mapper;
             _userResolverService = userResolverService;
             _userManager = userManager;
+            _sort = sort;
         }
 
         public async Task<int> CreateReservationAsync(ReservationDTO model, int roomId)
@@ -45,7 +48,7 @@ namespace HotelApp.API.DbContexts.Repositories
             return reservation.Id;
         }
 
-        public IEnumerable<Reservation> GetAllReservations()
+        public IEnumerable<Reservation> GetAllReservations(ReservationParameters reservationParameters)
         {
             var currentUser = _userResolverService.GetUser();
             var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
@@ -55,15 +58,22 @@ namespace HotelApp.API.DbContexts.Repositories
                                                           .Where(y => y.HotelId == x.HotelId))
                                                           .SelectMany(z => z
                                                           .SelectMany(y => y.Reservations));
-                                                          
-            return reservations;
-                                                     
+            reservations = FilterReservations(ref reservations, reservationParameters);
+            reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
+            return PagedList<Reservation>.ToPagedList(reservations,
+                reservationParameters.PageNumber,
+                reservationParameters.PageSize);
+
         }
 
-        public IEnumerable<Reservation> GetAllReservations(int roomId)
+        public IEnumerable<Reservation> GetAllReservations(int roomId, ReservationParameters reservationParameters)
         {
             var reservations = _hotelAppContext.Reservations.Where(x => x.RoomId == roomId);
-            return reservations;
+            reservations = FilterReservations(ref reservations, reservationParameters);
+            reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
+            return PagedList<Reservation>.ToPagedList(reservations,
+                reservationParameters.PageNumber,
+                reservationParameters.PageSize);
         }
 
         public Reservation GetReservationById(int id)
@@ -78,6 +88,16 @@ namespace HotelApp.API.DbContexts.Repositories
 
             _hotelAppContext.Reservations.Update(reservation);
             _hotelAppContext.SaveChanges();
+        }
+
+        private IQueryable<Reservation> FilterReservations(ref IQueryable<Reservation> reservations, ReservationParameters reservationParameters)
+        {
+            if(reservationParameters.ReservationStatus != null)
+            {
+                reservations = reservations.Where(r => r.ReservationStatus.Name == reservationParameters.ReservationStatus);
+            }
+            
+            return reservations;
         }
     }
 }

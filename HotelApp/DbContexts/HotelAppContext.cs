@@ -25,9 +25,37 @@ namespace HotelApp.API.DbContexts
         public DbSet<Config> Configurations { get; set; }
         public DbSet<HotelUser> HotelUsers { get; set; }
 
+        public override int SaveChanges()
+        {
+            UpdateSoftDeleteStatuses();
+            return base.SaveChanges();
+        }
+
+        private void UpdateSoftDeleteStatuses()
+        {
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+                        entry.CurrentValues["isDeleted"] = false;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Modified;
+                        entry.CurrentValues["isDeleted"] = true;
+                        break;
+                }
+            }
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property<bool>("isDeleted");
+            });
 
             modelBuilder.Entity<Hotel>(entity =>
             {
@@ -63,6 +91,8 @@ namespace HotelApp.API.DbContexts
                 entity.HasMany(e => e.Rooms)
                     .WithOne(h => h.Hotel)
                     .HasForeignKey(e => e.HotelId);
+
+                entity.Property<bool>("isDeleted");
             });
 
             modelBuilder.Entity<HotelStatus>(entity =>
@@ -103,6 +133,8 @@ namespace HotelApp.API.DbContexts
                 entity.HasOne(r => r.Room)
                     .WithMany(e => e.Reservations)
                     .HasForeignKey(e => e.RoomId);
+
+                entity.Property<bool>("isDeleted");
             });
 
             modelBuilder.Entity<HotelUser>(entity =>
@@ -163,6 +195,8 @@ namespace HotelApp.API.DbContexts
                 entity.HasMany(e => e.Reservations)
                     .WithOne(r => r.Room)
                     .HasForeignKey(e => e.RoomId);
+
+                entity.Property<bool>("isDeleted");
             });
 
             modelBuilder.Entity<UserRole>(entity =>
@@ -189,6 +223,8 @@ namespace HotelApp.API.DbContexts
                 entity.Property(e => e.Value)
                     .IsRequired()
                     .HasMaxLength(50);
+
+                entity.Property<bool>("isDeleted");
             });
         }
     }

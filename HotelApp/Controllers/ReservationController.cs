@@ -98,17 +98,17 @@ namespace HotelApp.API.Controllers
         [HttpGet]
         [Authorize(Roles = "Hotel manager")]
         [Route("/api/[controller]")]
-        public IActionResult GetAllReservations()
+        public IActionResult GetAllReservations([FromQuery] ReservationParameters reservationParameters)
         {
-            var reservations = _reservationRepository.GetAllReservations();
+            var reservations = _reservationRepository.GetAllReservations(reservationParameters);
             return Ok(reservations);
         }
 
         [HttpGet]
         [Authorize(Roles = "Hotel manager")]
-        public IActionResult GetAllReservations(int roomId)
+        public IActionResult GetAllReservations(int roomId, [FromQuery] ReservationParameters reservationParameters)
         {
-            var reservations = _reservationRepository.GetAllReservations(roomId);
+            var reservations = _reservationRepository.GetAllReservations(roomId, reservationParameters);
             return Ok(reservations);
         }
     }

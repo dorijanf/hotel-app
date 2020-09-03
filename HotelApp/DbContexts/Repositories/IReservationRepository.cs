@@ -10,7 +10,7 @@ namespace HotelApp.API.DbContexts.Repositories
         Task<int> CreateReservationAsync(ReservationDTO model, int roomId);
         void UpdateReservationStatus(int reservationId, int statusId);
         Reservation GetReservationById(int id);
-        IEnumerable<Reservation> GetAllReservations();
-        IEnumerable<Reservation> GetAllReservations(int roomId);
+        IEnumerable<Reservation> GetAllReservations(ReservationParameters reservationParameters);
+        IEnumerable<Reservation> GetAllReservations(int roomId, ReservationParameters reservationParameters);
     }
 }

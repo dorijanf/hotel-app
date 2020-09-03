@@ -48,6 +48,7 @@ namespace HotelApp
 
             // Helpers
             services.AddScoped<ISort<Room>, Sort<Room>>();
+            services.AddScoped<ISort<Reservation>, Sort<Reservation>>();
             
             // Repositories
             services.AddScoped<IHotelRepository, HotelRepository>();
