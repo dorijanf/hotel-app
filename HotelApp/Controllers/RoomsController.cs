@@ -13,7 +13,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace HotelApp.API.Controllers
 {
-    [Route("api/[controller]")]
     [Route("api/{hotelId}/[controller]")]
     [ApiController]
     public class RoomsController : ControllerBase
@@ -29,11 +28,12 @@ namespace HotelApp.API.Controllers
         public IActionResult AddRoom(int hotelId, [FromBody] AddRoomDTO model)
         {
             model.HotelId = hotelId;
-            _roomRepository.AddRoom(model);
+            var roomId = _roomRepository.CreateRoom(model);
             return Ok(new ResponseDTO
             {
                 Status = "Success",
-                Message = "Hotel room added successfully!"
+                Message = "Hotel room added successfully!",
+                EntityId = roomId
             });
         }
 
@@ -66,19 +66,38 @@ namespace HotelApp.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult GetRooms([FromRoute] int? hotelId, [FromQuery] RoomParameters roomParameters)
+        [Route("/api/[controller]")]
+        public IActionResult GetAllRooms([FromQuery] RoomParameters roomParameters)
         {
-            var rooms = _roomRepository.GetRooms(roomParameters, hotelId);
-            if (rooms.Count() < 1)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest,
-                                    new ResponseDTO
-                                    {
-                                        Status = "Error",
-                                        Message = "There aren't any rooms that satisfy your query."
-                                    });
-            }
+            var rooms = _roomRepository.GetAllRooms(roomParameters);
             return Ok(rooms);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetRoomsForHotel([FromRoute] int? hotelId, [FromQuery] RoomParameters roomParameters)
+        {
+            var rooms = _roomRepository.GetRoomsForHotel(roomParameters, hotelId);
+            return Ok(rooms);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{roomId}")]
+        public IActionResult GetSingleRoom([FromRoute] int roomId)
+        {
+            var room = _roomRepository.GetRoomById(roomId);
+            if(room != null) 
+            {
+                return Ok(room);
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound,
+                    new ResponseDTO
+                    {
+                        Status = "Not Found",
+                        Message = "Room does not exist."
+                    });
         }
     }
 }

@@ -1,8 +1,11 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Query.Internal;
 
 namespace HotelApp.API.Controllers
 {
@@ -21,12 +24,13 @@ namespace HotelApp.API.Controllers
         [Authorize(Roles = "Registered user")]
         public async Task<IActionResult> RegisterHotel([FromBody] RegisterHotelDTO model)
         {
-            await _hotelRepository.CreateHotelAsync(model);
+            var hotelId = await _hotelRepository.CreateHotelAsync(model);
 
             return Ok(new ResponseDTO
             {
                 Status = "Success",
-                Message = "Hotel registered successfully!"
+                Message = "Hotel registered successfully!",
+                EntityId = hotelId
             });
         }
 
@@ -54,6 +58,33 @@ namespace HotelApp.API.Controllers
                 Status = "Success",
                 Message = "Hotel status updated successfully!"
             });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{id}")]
+        public IActionResult GetSingleHotel(int id)
+        {
+            var hotel = _hotelRepository.GetHotelById(id);
+            if (hotel != null)
+            {
+                return Ok(hotel);
+            }
+
+            return StatusCode(StatusCodes.Status404NotFound,
+                new ResponseDTO
+                {
+                    Status = "Error",
+                    Message = "Hotel does not exist."
+                });
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult GetAllHotels()
+        {
+            var hotels = _hotelRepository.GetAllHotels();
+            return Ok(hotels);
         }
     }
 }

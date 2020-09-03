@@ -17,6 +17,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using System.Reflection;
 
 namespace HotelApp
 {
@@ -43,11 +44,16 @@ namespace HotelApp
             services.AddTransient<IValidator<LoginUserDTO>, LoginUserDTOValidator>();
             services.AddTransient<IValidator<RegisterUserDTO>, RegisterUserDTOValidator>();
             services.AddTransient<IValidator<RegisterHotelDTO>, RegisterHotelDTOValidator>();
+            services.AddTransient<IValidator<ReservationDTO>, ReservationDTOValidator>();
 
+            // Helpers
+            services.AddScoped<ISort<Room>, Sort<Room>>();
+            
             // Repositories
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IHotelStatusRepository, HotelStatusRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
 
             // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>

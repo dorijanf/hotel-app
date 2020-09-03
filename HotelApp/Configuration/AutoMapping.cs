@@ -10,6 +10,7 @@ namespace HotelApp.API.Configuration
         {
             CreateMap<RegisterHotelDTO, Hotel>();
             CreateMap<AddRoomDTO, Room>();
+            CreateMap<ReservationDTO, Reservation>();
         }
     }
 }

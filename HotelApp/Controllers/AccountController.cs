@@ -85,7 +85,7 @@ namespace HotelApp.API.Controllers
             return Ok(new ResponseDTO 
             { 
                 Status = "Success", 
-                Message = "User created successfully!" 
+                Message = "User created successfully!"
             });
         }
 
@@ -140,7 +140,7 @@ namespace HotelApp.API.Controllers
                                     });
 
             if (await _roleManager.RoleExistsAsync("Administrator"))
-            {
+            { 
                 await _userManager.AddToRoleAsync(user, "Administrator");
             }
 

@@ -10,10 +10,11 @@ namespace HotelApp.API.DbContexts.Repositories
 {
     public interface IRoomRepository
     {
-        void AddRoom(AddRoomDTO model);
+        int CreateRoom(AddRoomDTO model);
         void DeleteRoom(int roomId);
         void UpdateRoom(int roomId, AddRoomDTO model);
         Room GetRoomById(int roomId);
-        IEnumerable<Room> GetRooms(RoomParameters roomParameters, int? hotelId);
+        IEnumerable<Room> GetAllRooms(RoomParameters roomParameters);
+        IEnumerable<Room> GetRoomsForHotel(RoomParameters roomParameters, int? hotelId);
     }
 }

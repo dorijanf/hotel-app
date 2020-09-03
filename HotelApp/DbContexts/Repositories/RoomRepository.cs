@@ -4,8 +4,9 @@ using HotelApp.API.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
+using System.Reflection;
+using System.Text;
 
 namespace HotelApp.API.DbContexts.Repositories
 {
@@ -13,19 +14,23 @@ namespace HotelApp.API.DbContexts.Repositories
     {
         private readonly HotelAppContext _hotelAppContext;
         private readonly IMapper _mapper;
+        private readonly ISort<Room> _sort;
 
         public RoomRepository(HotelAppContext hotelAppContext,
-                              IMapper mapper)
+                              IMapper mapper,
+                              ISort<Room> sort)
         {
             _hotelAppContext = hotelAppContext;
             _mapper = mapper;
+            _sort = sort;
         }
 
-        public void AddRoom(AddRoomDTO model)
+        public int CreateRoom(AddRoomDTO model)
         {
             var room = _mapper.Map<Room>(model);
             _hotelAppContext.Rooms.Add(room);
             _hotelAppContext.SaveChanges();
+            return room.Id;
         }
 
         public void UpdateRoom(int roomId, AddRoomDTO model)
@@ -39,7 +44,7 @@ namespace HotelApp.API.DbContexts.Repositories
         public void DeleteRoom(int roomId)
         {
             var room = _hotelAppContext.Rooms.Find(roomId);
-            if(room != null) 
+            if (room != null)
             {
                 _hotelAppContext.Rooms.Remove(room);
                 _hotelAppContext.SaveChanges();
@@ -51,10 +56,30 @@ namespace HotelApp.API.DbContexts.Repositories
             return _hotelAppContext.Rooms.Find(id);
         }
 
-        public IEnumerable<Room> GetRooms(RoomParameters roomParameters, int? hotelId)
+        public IEnumerable<Room> GetRoomsForHotel(RoomParameters roomParameters, int? hotelId)
         {
             var rooms = _hotelAppContext.Set<Room>().AsQueryable();
+            rooms = FilterRooms(ref rooms, roomParameters);
+            rooms = _sort.ApplySort(rooms, roomParameters.OrderBy);
+            return PagedList<Room>.ToPagedList(rooms
+                .Where(r => r.HotelId == hotelId),
+                roomParameters.PageNumber,
+                roomParameters.PageSize);
+        }
 
+        public IEnumerable<Room> GetAllRooms(RoomParameters roomParameters)
+        {
+            var rooms = _hotelAppContext.Set<Room>().AsQueryable();
+            rooms = FilterRooms(ref rooms, roomParameters);
+            rooms = _sort.ApplySort(rooms, roomParameters.OrderBy);
+
+            return PagedList<Room>.ToPagedList(rooms,
+                roomParameters.PageNumber,
+                roomParameters.PageSize);
+        }
+
+        private IQueryable<Room> FilterRooms(ref IQueryable<Room> rooms, RoomParameters roomParameters)
+        {
             if (roomParameters.City != null)
             {
                 rooms = _hotelAppContext.Hotels.Where(h => h.City == roomParameters.City)
@@ -66,16 +91,7 @@ namespace HotelApp.API.DbContexts.Repositories
                 rooms = rooms.Where(r => r.NumberOfBeds == roomParameters.NumberOfBeds);
             }
 
-            if (hotelId.HasValue)
-            {
-                return PagedList<Room>.ToPagedList(rooms
-                    .Where(r => r.HotelId == hotelId),
-                    roomParameters.PageNumber,
-                    roomParameters.PageSize);
-            }
-            return PagedList<Room>.ToPagedList(rooms,
-                roomParameters.PageNumber,
-                roomParameters.PageSize);
+            return rooms;
         }
     }
 }

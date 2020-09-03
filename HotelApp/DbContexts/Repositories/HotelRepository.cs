@@ -32,13 +32,13 @@ namespace HotelApp.API.DbContexts.Repositories
             _mapper = mapper;
         }
 
-        public async Task CreateHotelAsync(RegisterHotelDTO model)
+        public async Task<int> CreateHotelAsync(RegisterHotelDTO model)
         {
             var currentUser = _userResolverService.GetUser();
             var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
             User user = await _userManager.FindByIdAsync(currentUserName);
 
-            if (_userManager.IsInRoleAsync(user, "Registered user").Result)
+            if (!_userManager.IsInRoleAsync(user, "Hotel manager").Result)
             {
                 await _userManager.AddToRoleAsync(user, "Hotel manager");
             }
@@ -51,14 +51,20 @@ namespace HotelApp.API.DbContexts.Repositories
             hotelManager.User = user;
 
             _hotelAppContext.HotelUsers.Add(hotelManager);
-            hotel.HotelUsers.ToList().Add(hotelManager);
+            hotel.HotelUsers.Add(hotelManager);
             _hotelAppContext.Hotels.Add(hotel);
             _hotelAppContext.SaveChanges();
+            return hotel.Id;
         }
 
         public ICollection<Hotel> GetAllHotelsWithSameName(string name)
         {
             return _hotelAppContext.Hotels.Where(h => h.Name == name).ToList();
+        }
+
+        public IEnumerable<Hotel> GetAllHotels()
+        {
+            return _hotelAppContext.Hotels;
         }
 
         public Hotel GetHotelById(int id)

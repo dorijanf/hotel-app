@@ -99,6 +99,10 @@ namespace HotelApp.API.DbContexts
                     .HasMaxLength(250);
 
                 entity.HasOne(e => e.RegisteredUser);
+
+                entity.HasOne(r => r.Room)
+                    .WithMany(e => e.Reservations)
+                    .HasForeignKey(e => e.RoomId);
             });
 
             modelBuilder.Entity<HotelUser>(entity =>
@@ -156,7 +160,9 @@ namespace HotelApp.API.DbContexts
                     .WithMany(r => r.Rooms)
                     .HasForeignKey(r => r.HotelId);
 
-                entity.HasMany(e => e.Reservations);
+                entity.HasMany(e => e.Reservations)
+                    .WithOne(r => r.Room)
+                    .HasForeignKey(e => e.RoomId);
             });
 
             modelBuilder.Entity<UserRole>(entity =>
