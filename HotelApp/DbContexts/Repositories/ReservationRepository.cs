@@ -51,13 +51,13 @@ namespace HotelApp.API.DbContexts.Repositories
         public IEnumerable<Reservation> GetAllReservations(ReservationParameters reservationParameters)
         {
             var currentUser = _userResolverService.GetUser();
-            var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            var reservations = _hotelAppContext.HotelUsers.Where(x => x.UserId == currentUserName)
+            var reservations = _hotelAppContext.HotelUsers.Where(x => x.UserId == currentUserId)
                                                           .Select(x => _hotelAppContext.Rooms
                                                           .Where(y => y.HotelId == x.HotelId))
-                                                          .SelectMany(z => z
-                                                          .SelectMany(y => y.Reservations));
+                                                          .SelectMany(z => z.SelectMany(y => y.Reservations));
+
             reservations = FilterReservations(ref reservations, reservationParameters);
             reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
             return PagedList<Reservation>.ToPagedList(reservations,
