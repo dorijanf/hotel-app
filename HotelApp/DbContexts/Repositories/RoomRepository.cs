@@ -56,13 +56,14 @@ namespace HotelApp.API.DbContexts.Repositories
             return _hotelAppContext.Rooms.Find(id);
         }
 
-        public IEnumerable<Room> GetRoomsForHotel(RoomParameters roomParameters, int? hotelId)
+        public IEnumerable<Room> GetRoomsForHotel(int hotelId, RoomParameters roomParameters)
         {
+            
             var rooms = _hotelAppContext.Set<Room>().AsQueryable();
             rooms = FilterRooms(ref rooms, roomParameters);
+            rooms = rooms.Where(r => r.HotelId == hotelId);
             rooms = _sort.ApplySort(rooms, roomParameters.OrderBy);
-            return PagedList<Room>.ToPagedList(rooms
-                .Where(r => r.HotelId == hotelId),
+            return PagedList<Room>.ToPagedList(rooms,
                 roomParameters.PageNumber,
                 roomParameters.PageSize);
         }

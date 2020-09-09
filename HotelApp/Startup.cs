@@ -17,8 +17,8 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using System.Reflection;
 using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.SpaServices.AngularCli;
 
 namespace HotelApp
 {
@@ -66,6 +66,12 @@ namespace HotelApp
                       new string[] { }
                     }
                   });
+            });
+
+            // SPA
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "../ClientApp/dist";
             });
 
             // Auto mapper
@@ -131,6 +137,10 @@ namespace HotelApp
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
+
+            app.UseSpaStaticFiles();
+
             app.UseSwagger();
 
             app.UseSwaggerUI(c =>
@@ -149,6 +159,16 @@ namespace HotelApp
             app.UseEndpoints(endpoints =>
             { 
                 endpoints.MapControllers();
+            });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "../ClientApp";
+
+                if (env.IsDevelopment())
+                {
+                    spa.UseAngularCliServer(npmScript: "start");
+                }
             });
         }
     }

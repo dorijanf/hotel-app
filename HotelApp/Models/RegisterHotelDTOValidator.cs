@@ -73,7 +73,7 @@ namespace HotelApp.API.Models
             {
                 id = Int32.Parse(_httpContextAccessor.HttpContext.GetRouteValue("id").ToString());
             }
-            if (_hotelRepository.GetAllHotels().Any(x => x.Name != name &&
+            if (_hotelRepository.GetAllHotelsForUser().Any(x => x.Name != name &&
                (isMethodPost == true || x.Id != id)))
             {
                 return false;

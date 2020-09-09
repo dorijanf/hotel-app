@@ -11,12 +11,12 @@ namespace HotelApp.API.Controllers
 {
     [Route("api/{hotelId}/rooms/{roomId}/[controller]")]
     [ApiController]
-    public class ReservationController : ControllerBase
+    public class ReservationsController : ControllerBase
     {
         private readonly IReservationRepository _reservationRepository;
         private readonly IRoomRepository _roomRepository;
 
-        public ReservationController(IReservationRepository reservationRepository,
+        public ReservationsController(IReservationRepository reservationRepository,
                                      IRoomRepository roomRepository)
         {
             _reservationRepository = reservationRepository;

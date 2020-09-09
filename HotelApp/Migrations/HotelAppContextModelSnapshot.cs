@@ -103,6 +103,11 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.HasKey("Id");
 
                     b.ToTable("HotelStatuses");
@@ -137,6 +142,11 @@ namespace HotelApp.API.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("HotelId", "UserId");
 
@@ -199,6 +209,11 @@ namespace HotelApp.API.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
+
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -345,6 +360,11 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
+                    b.Property<bool>("isDeleted")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -358,28 +378,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "4166f733-0370-4d95-b26d-3efaf1ac435f",
+                            ConcurrencyStamp = "2c53e837-a115-4b62-8c71-4912517e97b5",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "15f13e13-0549-4b54-89bc-a605965277b9",
+                            ConcurrencyStamp = "9c63da86-cfdc-45ed-b596-be4146c2ea47",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f04d3646-94e1-4687-803d-7afd75710691",
+                            ConcurrencyStamp = "be572657-5042-4a9e-8cdc-101a85f22e43",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "3dfa0888-832f-4b2c-8d10-4656a3b41f59",
+                            ConcurrencyStamp = "2cc59df0-df43-4040-8dc5-e1313737e2ee",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });

@@ -1,0 +1,11 @@
+<ng-container *ngIf="(room$ | async) as room; else loading">
+
+  <h1>{{ room.name }}</h1>
+  <div><em>Number of beds: </em>{{ room.numberOfBeds }}</div>
+  <div><em>Price: </em>{{ room.price }}</div>
+  <div><em>Hotel: </em>{{ room.hotelId }}</div>
+
+</ng-container>
+
+<a [routerLink]="['/']">View all rooms</a>
+<ng-template #loading>Loading...</ng-template>

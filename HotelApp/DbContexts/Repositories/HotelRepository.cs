@@ -62,9 +62,17 @@ namespace HotelApp.API.DbContexts.Repositories
             return _hotelAppContext.Hotels.Where(h => h.Name == name).ToList();
         }
 
-        public IEnumerable<Hotel> GetAllHotels()
+        public IEnumerable<Hotel> GetAllHotelsForUser()
         {
-            return _hotelAppContext.Hotels;
+            var currentUser = _userResolverService.GetUser();
+            var currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var hotels = _hotelAppContext.HotelUsers.Where(x => x.UserId == currentUserId)
+                                                          .Select(x => _hotelAppContext.Hotels
+                                                          .Where(y => y.Id == x.HotelId))
+                                                          .SelectMany(y => y);
+            return hotels;
+
         }
 
         public Hotel GetHotelById(int id)

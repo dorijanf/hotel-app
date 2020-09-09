@@ -116,6 +116,9 @@ namespace HotelApp.API.DbContexts
                     new HotelStatus { Id = (int) HotelStatusTypes.Inactive, Name = "Inactive" },
                     new HotelStatus { Id = (int) HotelStatusTypes.Pending, Name = "Pending" }
                     );
+
+                entity.Property<bool>("isDeleted")
+                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<Reservation>(entity =>
@@ -144,6 +147,9 @@ namespace HotelApp.API.DbContexts
                     hu.HotelId,
                     hu.UserId
                 });
+
+                entity.Property<bool>("isDeleted")
+                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<ReservationStatus>(entity =>
@@ -167,6 +173,9 @@ namespace HotelApp.API.DbContexts
                         new ReservationStatus { Id = (int) ReservationStatusTypes.Processing, Name = "Processing" },
                         new ReservationStatus { Id = (int) ReservationStatusTypes.Cancelled, Name = "Cancelled" }
                     );
+
+                entity.Property<bool>("isDeleted")
+                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<Room>(entity =>
@@ -207,6 +216,9 @@ namespace HotelApp.API.DbContexts
                     new UserRole { Id = "3", Name = "Hotel manager", NormalizedName = "hotel manager" },
                     new UserRole { Id = "4", Name = "Registered user", NormalizedName = "registered user" }
                     );
+
+                entity.Property<bool>("isDeleted")
+                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<Config>(entity =>

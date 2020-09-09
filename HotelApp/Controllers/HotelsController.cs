@@ -11,11 +11,11 @@ namespace HotelApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HotelController : ControllerBase
+    public class HotelsController : ControllerBase
     {
         private readonly IHotelRepository _hotelRepository;
 
-        public HotelController(IHotelRepository hotelRepository)
+        public HotelsController(IHotelRepository hotelRepository)
         {
             _hotelRepository = hotelRepository;
         }
@@ -80,10 +80,10 @@ namespace HotelApp.API.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Hotel manager")]
         public IActionResult GetAllHotels()
         {
-            var hotels = _hotelRepository.GetAllHotels();
+            var hotels = _hotelRepository.GetAllHotelsForUser();
             return Ok(hotels);
         }
     }

@@ -15,6 +15,6 @@ namespace HotelApp.API.DbContexts.Repositories
         void UpdateRoom(int roomId, AddRoomDTO model);
         Room GetRoomById(int roomId);
         IEnumerable<Room> GetAllRooms(RoomParameters roomParameters);
-        IEnumerable<Room> GetRoomsForHotel(RoomParameters roomParameters, int? hotelId);
+        IEnumerable<Room> GetRoomsForHotel(int hotelId, RoomParameters roomParameters);
     }
 }

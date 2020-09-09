@@ -26,7 +26,7 @@ namespace HotelApp.API.Controllers
         [HttpPost]
         [Authorize(Roles = "Hotel manager")]
         public IActionResult AddRoom(int hotelId, [FromBody] AddRoomDTO model)
-        {
+        {   
             model.HotelId = hotelId;
             var roomId = _roomRepository.CreateRoom(model);
             return Ok(new ResponseDTO
@@ -75,15 +75,15 @@ namespace HotelApp.API.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        public IActionResult GetRoomsForHotel([FromRoute] int? hotelId, [FromQuery] RoomParameters roomParameters)
+        public IActionResult GetRoomsForHotel(int hotelId, [FromQuery] RoomParameters roomParameters)
         {
-            var rooms = _roomRepository.GetRoomsForHotel(roomParameters, hotelId);
+            var rooms = _roomRepository.GetRoomsForHotel(hotelId, roomParameters);
             return Ok(rooms);
         }
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{roomId}")]
+        [Route("/api/rooms/{roomId}")]
         public IActionResult GetSingleRoom([FromRoute] int roomId)
         {
             var room = _roomRepository.GetRoomById(roomId);
