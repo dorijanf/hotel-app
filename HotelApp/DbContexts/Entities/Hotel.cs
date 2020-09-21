@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HotelApp.API.DbContexts.Entities
 {
@@ -17,7 +15,7 @@ namespace HotelApp.API.DbContexts.Entities
         public int StatusId { get; set; }
 
         public virtual HotelStatus Status { get; set; }
-        public virtual ICollection<User> Managers { get; set; }
+        public virtual ICollection<HotelUser> HotelUsers { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
     }
 }

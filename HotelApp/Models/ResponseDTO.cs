@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace HotelApp.API.Models
+﻿namespace HotelApp.API.Models
 {
     public class ResponseDTO
     {
         public string Status { get; set; }
         public string Message { get; set; }
+        public int? EntityId { get; set; }
     }
 }

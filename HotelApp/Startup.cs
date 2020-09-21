@@ -1,26 +1,24 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using HotelApp.API.Configuration;
 using HotelApp.API.DbContexts;
 using HotelApp.API.DbContexts.Entities;
+using HotelApp.API.DbContexts.Repositories;
 using HotelApp.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using System.Reflection;
+using Microsoft.OpenApi.Models;
 
 namespace HotelApp
 {
@@ -40,9 +38,54 @@ namespace HotelApp
             {
             }).AddFluentValidation();
 
+            // Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo
+                {
+                    Title = "HotelApp",
+                    Version = "v1"
+                });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please insert JWT with Bearer into field",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey
+                });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                   {
+                     new OpenApiSecurityScheme
+                     {
+                       Reference = new OpenApiReference
+                       {
+                         Type = ReferenceType.SecurityScheme,
+                         Id = "Bearer"
+                       }
+                      },
+                      new string[] { }
+                    }
+                  });
+            });
+
+            // Auto mapper
+            services.AddAutoMapper(typeof(Startup));
+
             // Validation services
             services.AddTransient<IValidator<LoginUserDTO>, LoginUserDTOValidator>();
             services.AddTransient<IValidator<RegisterUserDTO>, RegisterUserDTOValidator>();
+            services.AddTransient<IValidator<RegisterHotelDTO>, RegisterHotelDTOValidator>();
+            services.AddTransient<IValidator<ReservationDTO>, ReservationDTOValidator>();
+
+            // Helpers
+            services.AddScoped<ISort<Room>, Sort<Room>>();
+            services.AddScoped<ISort<Reservation>, Sort<Reservation>>();
+            
+            // Repositories
+            services.AddScoped<IHotelRepository, HotelRepository>();
+            services.AddScoped<IHotelStatusRepository, HotelStatusRepository>();
+            services.AddScoped<IRoomRepository, RoomRepository>();
+            services.AddScoped<IReservationRepository, ReservationRepository>();
 
             // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>
@@ -53,6 +96,8 @@ namespace HotelApp
             // Identity
             services.AddIdentity<User, UserRole>()
                 .AddEntityFrameworkStores<HotelAppContext>();
+            services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddTransient<UserResolverService>();
 
             // JWT settings
             var jwtSettings = new JwtSettings();
@@ -85,6 +130,13 @@ namespace HotelApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Test API V1");
+            });
 
             app.UseHttpsRedirection();
 

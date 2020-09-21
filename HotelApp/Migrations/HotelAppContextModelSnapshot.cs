@@ -38,6 +38,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Configurations");
@@ -77,6 +80,9 @@ namespace HotelApp.API.Migrations
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -124,6 +130,21 @@ namespace HotelApp.API.Migrations
                         });
                 });
 
+            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.HotelUser", b =>
+                {
+                    b.Property<int>("HotelId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("HotelId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("HotelUsers");
+                });
+
             modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Reservation", b =>
                 {
                     b.Property<int>("Id")
@@ -150,11 +171,11 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("ReservationStatusId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("RoomId")
+                    b.Property<int>("RoomId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -229,6 +250,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasMaxLength(20);
 
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.HasIndex("HotelId");
@@ -254,9 +278,6 @@ namespace HotelApp.API.Migrations
 
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
-
-                    b.Property<int?>("HotelId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -291,9 +312,10 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.HasKey("Id");
+                    b.Property<bool>("isDeleted")
+                        .HasColumnType("bit");
 
-                    b.HasIndex("HotelId");
+                    b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -336,28 +358,28 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "3e243bc0-5fa3-4b3f-bba5-4b1a9097340c",
+                            ConcurrencyStamp = "4166f733-0370-4d95-b26d-3efaf1ac435f",
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "c9ca6299-18c3-457d-855d-0af7bd6f04e6",
+                            ConcurrencyStamp = "15f13e13-0549-4b54-89bc-a605965277b9",
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f4cc5102-cf62-41c8-9ca4-3291e6bc5f71",
+                            ConcurrencyStamp = "f04d3646-94e1-4687-803d-7afd75710691",
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "7f8fa03b-7f37-4a9b-985d-2b7409a65ee1",
+                            ConcurrencyStamp = "3dfa0888-832f-4b2c-8d10-4656a3b41f59",
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });
@@ -476,6 +498,21 @@ namespace HotelApp.API.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.HotelUser", b =>
+                {
+                    b.HasOne("HotelApp.API.DbContexts.Entities.Hotel", "Hotel")
+                        .WithMany("HotelUsers")
+                        .HasForeignKey("HotelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("HotelApp.API.DbContexts.Entities.User", "User")
+                        .WithMany("HotelUsers")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Reservation", b =>
                 {
                     b.HasOne("HotelApp.API.DbContexts.Entities.User", "RegisteredUser")
@@ -488,9 +525,11 @@ namespace HotelApp.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("HotelApp.API.DbContexts.Entities.Room", null)
+                    b.HasOne("HotelApp.API.DbContexts.Entities.Room", "Room")
                         .WithMany("Reservations")
-                        .HasForeignKey("RoomId");
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Room", b =>
@@ -500,13 +539,6 @@ namespace HotelApp.API.Migrations
                         .HasForeignKey("HotelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.User", b =>
-                {
-                    b.HasOne("HotelApp.API.DbContexts.Entities.Hotel", null)
-                        .WithMany("Managers")
-                        .HasForeignKey("HotelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

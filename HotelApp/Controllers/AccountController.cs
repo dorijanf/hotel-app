@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -86,7 +85,7 @@ namespace HotelApp.API.Controllers
             return Ok(new ResponseDTO 
             { 
                 Status = "Success", 
-                Message = "User created successfully!" 
+                Message = "User created successfully!"
             });
         }
 
@@ -141,7 +140,7 @@ namespace HotelApp.API.Controllers
                                     });
 
             if (await _roleManager.RoleExistsAsync("Administrator"))
-            {
+            { 
                 await _userManager.AddToRoleAsync(user, "Administrator");
             }
 

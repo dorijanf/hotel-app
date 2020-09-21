@@ -9,12 +9,32 @@
     <Compile Remove="Migrations\20200825065844_Initial.Designer.cs" />
     <Compile Remove="Migrations\20200826065048_ConfiguringDatabaseConstrainsFixed.cs" />
     <Compile Remove="Migrations\20200826065048_ConfiguringDatabaseConstrainsFixed.Designer.cs" />
+    <Compile Remove="Migrations\20200830211147_hoteluser.cs" />
+    <Compile Remove="Migrations\20200830211147_hoteluser.Designer.cs" />
+    <Compile Remove="Migrations\20200830213729_hoteluser2.cs" />
+    <Compile Remove="Migrations\20200830213729_hoteluser2.Designer.cs" />
+    <Compile Remove="Migrations\20200830214013_hoteluser2.cs" />
+    <Compile Remove="Migrations\20200830214013_hoteluser2.Designer.cs" />
+    <Compile Remove="Migrations\20200830214225_hoteluser2.cs" />
+    <Compile Remove="Migrations\20200830214225_hoteluser2.Designer.cs" />
+    <Compile Remove="Migrations\20200830214649_hoteluser2.cs" />
+    <Compile Remove="Migrations\20200830214649_hoteluser2.Designer.cs" />
+    <Compile Remove="Migrations\20200830215034_hoteluser2.cs" />
+    <Compile Remove="Migrations\20200830215034_hoteluser2.Designer.cs" />
+    <Compile Remove="Migrations\20200903070837_roomreservationrelationship.cs" />
+    <Compile Remove="Migrations\20200903070837_roomreservationrelationship.Designer.cs" />
+    <Compile Remove="Migrations\20200903071307_roomreservationrelationship.cs" />
+    <Compile Remove="Migrations\20200903071307_roomreservationrelationship.Designer.cs" />
+    <Compile Remove="Migrations\20200903072831_roomreservationrelationship.cs" />
+    <Compile Remove="Migrations\20200903072831_roomreservationrelationship.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.0.1" />
     <PackageReference Include="FluentValidation.AspNetCore" Version="9.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.7" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>
@@ -25,6 +45,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.5.1" />
+    <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
   </ItemGroup>
 
 
