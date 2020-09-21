@@ -1,0 +1,69 @@
+<h1>My Reservations</h1>
+<p *ngIf="!(reservations$ | async)"><em>Loading reservations...</em></p>
+<form [formGroup]="resultsForm">
+  <div class="form-row">
+    <div class="text-left form-group col-md-4">
+      <div class="bs-select">
+          Show
+          <select formControlName="reservations" (change)="setNumberOfResults($event)">
+            <option *ngFor="let reservation of reservationsPerPageResults">{{ reservation }}</option>
+          </select>
+          rooms
+      </div>
+    </div>
+  </div>
+</form>
+<table class="table table-responsive-md table-hover text-center"
+  *ngIf="(reservations$ | async)?.length>0">
+  <thead>
+    <tr>
+      <th>Unique Reservation Id</th>
+      <th (click)="setOrderBy('CreationDate')">Creation Date
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'CreationDate'}" [icon]="faCaretUp"></fa-icon>
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'CreationDate desc'}" [icon]="faCaretDown"></fa-icon>
+      </th>
+      <th>Start Date</th>
+      <th>End Date</th>
+      <th>Note</th>
+      <th>Room</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let reservation of (reservations$ | async)">
+      <td>{{ reservation.id }}</td>
+      <td>{{ reservation.creationDate | date:'dd/MM/yyyy'}}</td>
+      <td>{{ reservation.dateFrom | date:'dd/MM/yyyy'}}</td>
+      <td>{{ reservation.dateTo | date:'dd/MM/yyyy'}}</td>
+      <td>{{ reservation.note }}</td>
+      <td><a [routerLink]="['/rooms/', reservation.roomId]">View room</a></td>
+      <div [ngSwitch]="reservation.reservationStatusId">
+        <td class="processing" *ngSwitchCase="'1'">Processing</td>
+        <td class="accepted" *ngSwitchCase="'2'">Accepted</td>
+        <td class="denied" *ngSwitchCase="'3'">Denied</td>
+        <td class="cancelled" *ngSwitchCase="'4'">Cancelled</td>
+      </div>
+      <div *ngIf="reservation.reservationStatusId != 4">
+        <td>
+          <button (click)="updateStatus(2, reservation.roomId, reservation.id)" class="btn btn-success">Accept</button>
+          <button (click)="updateStatus(3, reservation.roomId, reservation.id)" class="action-button btn btn-danger">Deny</button>
+        </td>
+      </div>
+    </tr>
+  </tbody>
+</table>
+<div class="container">
+  <ul class="pagination justify-content-center">
+    <li *ngFor="let page of pageField;let i=index" class="page-item">
+      <a (click)="showReservationsByPageNumber(page,i)" [ngClass]="pageNumber[i] ? 'page-link-active':'page-link'"
+        style=" margin-right: 5px; margin-top: 5px;">{{page}}</a>
+
+    </li>
+  </ul>
+  <div class="text-center">
+    Page {{ pageNo }} of {{ paginationService.exactPageList }} Pages
+  </div><br />
+</div>
+
+

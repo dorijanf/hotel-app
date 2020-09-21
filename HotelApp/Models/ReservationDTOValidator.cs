@@ -22,6 +22,9 @@ namespace HotelApp.API.Models
 
             RuleFor(x => x.DateFrom).GreaterThanOrEqualTo(DateTime.Now)
                 .WithMessage("The reservation start date must be greater than or equal to current time.");
+
+            RuleFor(x => x.Note).MaximumLength(255)
+                .WithMessage("The maximum length of the note is 255 characters.");
         }
     }
 }

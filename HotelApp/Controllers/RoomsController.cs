@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 
 namespace HotelApp.API.Controllers
 {
-    [Route("api/{hotelId}/[controller]")]
+    [Route("api/{HotelId}/[controller]")]
     [ApiController]
     public class RoomsController : ControllerBase
     {
@@ -25,9 +25,8 @@ namespace HotelApp.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Hotel manager")]
-        public IActionResult AddRoom(int hotelId, [FromBody] AddRoomDTO model)
+        public IActionResult AddRoom([FromBody] AddRoomDTO model)
         {   
-            model.HotelId = hotelId;
             var roomId = _roomRepository.CreateRoom(model);
             return Ok(new ResponseDTO
             {
@@ -40,9 +39,8 @@ namespace HotelApp.API.Controllers
         [HttpPut]
         [Authorize(Roles = "Hotel manager")]
         [Route("{roomId}")]
-        public IActionResult UpdateRoom(int hotelId, int roomId, [FromBody] AddRoomDTO model)
+        public IActionResult UpdateRoom(int roomId, [FromBody] AddRoomDTO model)
         {
-            model.HotelId = hotelId;
             _roomRepository.UpdateRoom(roomId, model);
             return Ok(new ResponseDTO
             {
@@ -62,6 +60,14 @@ namespace HotelApp.API.Controllers
                 Status = "Success",
                 Message = "Hotel room deleted successfully!"
             });
+        }
+
+        [HttpGet]
+        [Route("/api/[controller]/count")]
+        public int GetRoomsCount([FromQuery] RoomParameters roomParameters)
+        {
+            var roomCount = _roomRepository.GetAllRoomsCount(roomParameters);
+            return roomCount;
         }
 
         [HttpGet]

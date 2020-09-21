@@ -2,7 +2,7 @@
 
 namespace HotelApp.API.DbContexts.Entities
 {
-    public class Reservation
+    public class Reservation : IDeleteable
     {
         public int Id { get; set; }
         public DateTime CreationDate { get; set; }
@@ -16,5 +16,7 @@ namespace HotelApp.API.DbContexts.Entities
         public virtual User RegisteredUser { get; set; }
         public virtual Room Room { get; set; }
         public virtual ReservationStatus ReservationStatus { get; set;  }
+
+        public bool IsDeleted { get; set; }
     }
 }

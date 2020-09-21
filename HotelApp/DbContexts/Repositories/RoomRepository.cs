@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using HotelApp.API.DbContexts.Entities;
 using HotelApp.API.Models;
+using Microsoft.OpenApi.Validations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,8 +36,8 @@ namespace HotelApp.API.DbContexts.Repositories
 
         public void UpdateRoom(int roomId, AddRoomDTO model)
         {
-            var room = GetRoomById(roomId);
-            room = _mapper.Map<Room>(model);
+            var room = _mapper.Map<Room>(model);
+            room.Id = roomId;
             _hotelAppContext.Rooms.Update(room);
             _hotelAppContext.SaveChanges();
         }
@@ -66,6 +67,25 @@ namespace HotelApp.API.DbContexts.Repositories
             return PagedList<Room>.ToPagedList(rooms,
                 roomParameters.PageNumber,
                 roomParameters.PageSize);
+        }
+
+        public int GetAllRoomsCount(RoomParameters roomParameters)
+        {
+            var rooms = _hotelAppContext.Set<Room>().AsQueryable();
+            if (roomParameters.HotelId.HasValue)
+            {
+                roomParameters.PageSize = _hotelAppContext.Rooms.Where(x => x.HotelId == roomParameters.HotelId)
+                                                                .Count();
+                rooms = _hotelAppContext.Rooms.Where(x => x.HotelId == roomParameters.HotelId);
+            }
+            else
+            {
+                roomParameters.PageSize = _hotelAppContext.Rooms.Count();
+            }
+            rooms = FilterRooms(ref rooms, roomParameters);
+            rooms = _sort.ApplySort(rooms, roomParameters.OrderBy);
+
+            return rooms.Count();
         }
 
         public IEnumerable<Room> GetAllRooms(RoomParameters roomParameters)

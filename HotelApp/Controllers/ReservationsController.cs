@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HotelApp.API.Controllers
 {
-    [Route("api/{hotelId}/rooms/{roomId}/[controller]")]
+    [Route("api/rooms/{roomId}/[controller]")]
     [ApiController]
     public class ReservationsController : ControllerBase
     {
@@ -48,20 +48,7 @@ namespace HotelApp.API.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Registered user")]
-        [Route("{id}/cancel")]
-        public IActionResult CancelReservation(int id)
-        {
-            _reservationRepository.UpdateReservationStatus(id, (int) ReservationStatusTypes.Cancelled);
-            return Ok(new ResponseDTO
-            {
-                Status = "Success",
-                Message = "Reservation successfully cancelled!"
-            });
-        }
-
-        [HttpPut]
-        [Authorize(Roles = "Hotel manager")]
+        [Authorize(Roles = "Hotel manager, Registered user")]
         [Route("{id}")]
         public IActionResult UpdateReservationStatus(int id, [FromBody] int statusId)
         {
@@ -92,11 +79,29 @@ namespace HotelApp.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Hotel manager")]
-        public IActionResult GetAllReservations(int roomId, [FromQuery] ReservationParameters reservationParameters)
+        [Route("/api/[controller]/count")]
+        public int GetReservationsCount([FromQuery] ReservationParameters reservationParameters)
         {
-            var reservations = _reservationRepository.GetAllReservations(roomId, reservationParameters);
-            return Ok(reservations);
+            var reservationCount = _reservationRepository.GetAllReservationsCount(reservationParameters);
+            return reservationCount;
+        }
+
+        [HttpGet]
+        [Route("/api/user-reservations")]
+        [Authorize(Roles = "Registered user")]
+        public IActionResult GetAllUserReservations([FromQuery] ReservationParameters reservationParameters)
+        {
+            var reservationCount = _reservationRepository.GetAllUserReservations(reservationParameters);
+            return Ok(reservationCount.Result);
+        }
+
+        [HttpGet]
+        [Route("/api/user-reservations/count")]
+        [Authorize(Roles = "Registered user")]
+        public IActionResult GetAllUserReservationsCount ([FromQuery] ReservationParameters reservationParameters)
+        {
+            var reservationCount = _reservationRepository.GetAllUserReservationsCount(reservationParameters);
+            return Ok(reservationCount.Result);
         }
     }
 }

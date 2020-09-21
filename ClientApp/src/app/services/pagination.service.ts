@@ -15,8 +15,8 @@ export class PaginationService {
     pageOnLoad() {
         if (this.temppage == 0) {
             this.pageField = [];
-            for (var a = 0; a < this.exactPageList; a++) {
-                this.pageField[a] = this.temppage + 1;
+            for (var i = 0; i < this.exactPageList; i++) {
+                this.pageField[i] = this.temppage + 1;
                 this.temppage = this.temppage + 1;
             }
         }

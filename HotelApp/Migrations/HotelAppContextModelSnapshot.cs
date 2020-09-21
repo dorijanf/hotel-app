@@ -15,7 +15,7 @@ namespace HotelApp.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -29,6 +29,9 @@ namespace HotelApp.API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -37,9 +40,6 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("int")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -73,6 +73,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -80,9 +83,6 @@ namespace HotelApp.API.Migrations
 
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -98,15 +98,13 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("isDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -116,21 +114,25 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = 1,
+                            IsDeleted = false,
                             Name = "Active"
                         },
                         new
                         {
                             Id = 4,
+                            IsDeleted = false,
                             Name = "Denied"
                         },
                         new
                         {
                             Id = 2,
+                            IsDeleted = false,
                             Name = "Inactive"
                         },
                         new
                         {
                             Id = 3,
+                            IsDeleted = false,
                             Name = "Pending"
                         });
                 });
@@ -143,10 +145,8 @@ namespace HotelApp.API.Migrations
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<bool>("isDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("HotelId", "UserId");
 
@@ -171,6 +171,9 @@ namespace HotelApp.API.Migrations
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
@@ -183,9 +186,6 @@ namespace HotelApp.API.Migrations
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -205,15 +205,13 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("isDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -223,21 +221,25 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = 2,
+                            IsDeleted = false,
                             Name = "Accepted"
                         },
                         new
                         {
                             Id = 3,
+                            IsDeleted = false,
                             Name = "Denied"
                         },
                         new
                         {
                             Id = 1,
+                            IsDeleted = false,
                             Name = "Processing"
                         },
                         new
                         {
                             Id = 4,
+                            IsDeleted = false,
                             Name = "Cancelled"
                         });
                 });
@@ -252,6 +254,9 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -264,9 +269,6 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int")
                         .HasMaxLength(20);
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -292,6 +294,9 @@ namespace HotelApp.API.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -327,9 +332,6 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -352,6 +354,9 @@ namespace HotelApp.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -359,11 +364,6 @@ namespace HotelApp.API.Migrations
                     b.Property<string>("NormalizedName")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
-
-                    b.Property<bool>("isDeleted")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
 
                     b.HasKey("Id");
 
@@ -378,28 +378,32 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "2c53e837-a115-4b62-8c71-4912517e97b5",
+                            ConcurrencyStamp = "05d0486b-0a48-46ea-a48d-2133ea3f0343",
+                            IsDeleted = false,
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "9c63da86-cfdc-45ed-b596-be4146c2ea47",
+                            ConcurrencyStamp = "c8b573f6-418b-4f57-9d2e-77dafc2530df",
+                            IsDeleted = false,
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "be572657-5042-4a9e-8cdc-101a85f22e43",
+                            ConcurrencyStamp = "a9ac1be0-059e-4d1e-85fc-7e7e69644d41",
+                            IsDeleted = false,
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "2cc59df0-df43-4040-8dc5-e1313737e2ee",
+                            ConcurrencyStamp = "5dc1b153-e7ec-4012-8d55-2a008a68ca78",
+                            IsDeleted = false,
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });

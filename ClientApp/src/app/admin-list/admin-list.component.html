@@ -1,0 +1,28 @@
+<h1>All admins</h1>
+
+<a class="btn btn-success" [routerLink]="['register']">Add new admin</a>
+<table class="table table-responsive-md table-hover text-center"
+  *ngIf="(admins$ | async)?.length>0">
+  <thead>
+    <tr>
+      <th>Unique Id</th>
+      <th>Username</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let admin of (admins$ | async)">
+      <td>{{ admin.id }}</td>
+      <td>{{ admin.userName }}</td>
+      <td>{{ admin.email }}</td>
+      <td><button (click)="deleteAdmin(template)" class="btn btn-danger">Delete</button></td>
+      <ng-template #template>
+        <div class="modal-body text-center">
+          <p>Do you really want to delete this user?</p>
+          <button type="button" class="btn btn-default" (click)="confirm(admin.id)" >Yes</button>
+          <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+        </div>
+      </ng-template>
+    </tr>
+  </tbody>
+</table>

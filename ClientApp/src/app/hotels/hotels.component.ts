@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { HotelService } from '../services/hotel.service';
+import { Hotel } from '../models/hotel';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-hotels',
@@ -7,9 +10,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HotelsComponent implements OnInit {
 
-  constructor() { }
+  hotels$: Observable<Hotel[]>;
+  constructor(private hotelService: HotelService) {}
 
   ngOnInit(): void {
+    this.loadHotels();
   }
+
+  loadHotels() {
+    this.hotels$ = this.hotelService.getAllHotels();
+  }
+
+
+
 
 }

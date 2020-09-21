@@ -19,6 +19,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Newtonsoft.Json;
 
 namespace HotelApp
 {
@@ -36,7 +37,8 @@ namespace HotelApp
         {
             services.AddControllers(options =>
             {
-            }).AddFluentValidation();
+            }).AddFluentValidation()
+              .AddNewtonsoftJson(opt => opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
 
             // Swagger
             services.AddSwaggerGen(c =>

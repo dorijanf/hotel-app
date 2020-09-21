@@ -11,10 +11,11 @@ import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
 
+import { AuthenticationService } from './services/authentication.service'
 @Injectable()
 export class HttpErrorInterceptor implements HttpInterceptor {
 
-  constructor(private router: Router){
+  constructor(private router: Router, private authenticationService: AuthenticationService){
 
   }
 
@@ -33,6 +34,11 @@ export class HttpErrorInterceptor implements HttpInterceptor {
         }
         if(error.status == 404){
           this.router.navigate(['404']);
+        }
+
+        if(error.status === 401) {
+          this.authenticationService.logout();
+          location.reload(true);
         }
         return throwError(errorMessage);
       })

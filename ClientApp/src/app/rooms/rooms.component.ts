@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms'
+import { FormBuilder } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { RoomsService } from '../services/rooms.service'
-import { Room } from '../models/room'
+import { RoomsService } from '../services/rooms.service';
+import { Room } from '../models/room';
 import { PaginationService } from '../services/pagination.service';
-import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons'
+import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-rooms',
@@ -19,6 +19,7 @@ export class RoomsComponent implements OnInit {
   })
 
   rooms$: Observable<Room[]>;
+  hotelIds: number[];
   pageNo: any = 1;
   pageNumber: boolean[] = [];
   orderBy: any = 'name';
@@ -32,22 +33,22 @@ export class RoomsComponent implements OnInit {
   paginationData: number;
   roomsPerPage: any = 10;
   roomsPerPageResults = [10, 25, 50, 100];
-  totalRooms: any;
   totalRoomsCount: any;
 
-  constructor(private fb: FormBuilder, public roomsService: RoomsService, public paginationService: PaginationService) { }
+  constructor(private fb: FormBuilder,
+    public roomsService: RoomsService,
+    public paginationService: PaginationService) { }
 
   ngOnInit(): void {
     this.pageNumber[0] = true;
-    this.paginationService.temppage = 0;
     this.loadRooms();
   }
 
   loadRooms() {
     this.rooms$ = this.roomsService.getRooms(this.pageNo,
       this.roomsPerPage, this.orderBy, this.numberOfBeds, this.city);
-    this.totalRoomsCount = this.rooms$.subscribe(result => console.log(result.length))
-    this.totalNoOfPages();
+    this.paginationService.temppage = 0;
+    this.getRoomsCount();
   }
 
   totalNoOfPages() {
@@ -69,6 +70,14 @@ export class RoomsComponent implements OnInit {
     this.pageNumber[i] = true;
     this.pageNo = page;
     this.loadRooms();
+  }
+
+  getRoomsCount() {
+    this.roomsService.getRoomsCount(null, this.pageNo,this.roomsPerPage,
+      this.orderBy, this.numberOfBeds, this.city).subscribe((res: any) => {
+      this.totalRoomsCount = res;
+      this.totalNoOfPages();
+    });
   }
 
   setOrderBy(orderBy){

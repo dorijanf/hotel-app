@@ -33,17 +33,17 @@ namespace HotelApp.API.DbContexts
 
         private void UpdateSoftDeleteStatuses()
         {
-            foreach (var entry in ChangeTracker.Entries())
+            ChangeTracker.DetectChanges();
+
+            var markedAsDeleted = ChangeTracker.Entries().
+                Where(x => x.State == EntityState.Deleted);
+
+            foreach(var item in markedAsDeleted)
             {
-                switch (entry.State)
+                if(item.Entity is IDeleteable entity)
                 {
-                    case EntityState.Added:
-                        entry.CurrentValues["isDeleted"] = false;
-                        break;
-                    case EntityState.Deleted:
-                        entry.State = EntityState.Modified;
-                        entry.CurrentValues["isDeleted"] = true;
-                        break;
+                    item.State = EntityState.Unchanged;
+                    entity.IsDeleted = true;
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace HotelApp.API.DbContexts
 
             modelBuilder.Entity<User>(entity =>
             {
-                entity.Property<bool>("isDeleted");
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
 
             modelBuilder.Entity<Hotel>(entity =>
@@ -92,7 +92,7 @@ namespace HotelApp.API.DbContexts
                     .WithOne(h => h.Hotel)
                     .HasForeignKey(e => e.HotelId);
 
-                entity.Property<bool>("isDeleted");
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
 
             modelBuilder.Entity<HotelStatus>(entity =>
@@ -116,9 +116,6 @@ namespace HotelApp.API.DbContexts
                     new HotelStatus { Id = (int) HotelStatusTypes.Inactive, Name = "Inactive" },
                     new HotelStatus { Id = (int) HotelStatusTypes.Pending, Name = "Pending" }
                     );
-
-                entity.Property<bool>("isDeleted")
-                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<Reservation>(entity =>
@@ -137,7 +134,8 @@ namespace HotelApp.API.DbContexts
                     .WithMany(e => e.Reservations)
                     .HasForeignKey(e => e.RoomId);
 
-                entity.Property<bool>("isDeleted");
+                entity.HasQueryFilter(p => !p.IsDeleted);
+
             });
 
             modelBuilder.Entity<HotelUser>(entity =>
@@ -148,8 +146,7 @@ namespace HotelApp.API.DbContexts
                     hu.UserId
                 });
 
-                entity.Property<bool>("isDeleted")
-                      .HasDefaultValue(false);
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
 
             modelBuilder.Entity<ReservationStatus>(entity =>
@@ -174,8 +171,7 @@ namespace HotelApp.API.DbContexts
                         new ReservationStatus { Id = (int) ReservationStatusTypes.Cancelled, Name = "Cancelled" }
                     );
 
-                entity.Property<bool>("isDeleted")
-                      .HasDefaultValue(false);
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
 
             modelBuilder.Entity<Room>(entity =>
@@ -205,7 +201,7 @@ namespace HotelApp.API.DbContexts
                     .WithOne(r => r.Room)
                     .HasForeignKey(e => e.RoomId);
 
-                entity.Property<bool>("isDeleted");
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
 
             modelBuilder.Entity<UserRole>(entity =>
@@ -216,9 +212,6 @@ namespace HotelApp.API.DbContexts
                     new UserRole { Id = "3", Name = "Hotel manager", NormalizedName = "hotel manager" },
                     new UserRole { Id = "4", Name = "Registered user", NormalizedName = "registered user" }
                     );
-
-                entity.Property<bool>("isDeleted")
-                      .HasDefaultValue(false);
             });
 
             modelBuilder.Entity<Config>(entity =>
@@ -236,7 +229,7 @@ namespace HotelApp.API.DbContexts
                     .IsRequired()
                     .HasMaxLength(50);
 
-                entity.Property<bool>("isDeleted");
+                entity.HasQueryFilter(p => !p.IsDeleted);
             });
         }
     }

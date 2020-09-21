@@ -4,4 +4,5 @@ export class Room {
   numberOfBeds: number;
   price: number;
   hotelId: number;
+  hotelName: string;
 }

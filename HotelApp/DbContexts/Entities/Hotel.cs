@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace HotelApp.API.DbContexts.Entities
 {
-    public class Hotel
+    public class Hotel : IDeleteable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -17,5 +17,7 @@ namespace HotelApp.API.DbContexts.Entities
         public virtual HotelStatus Status { get; set; }
         public virtual ICollection<HotelUser> HotelUsers { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

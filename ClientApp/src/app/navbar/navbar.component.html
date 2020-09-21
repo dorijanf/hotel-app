@@ -1,0 +1,38 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/']">HotelApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar"
+      (click)="toggleNavbar()">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse show" id="navbar"
+      [ngClass]="{'show': navbarOpen }">
+      <ul class="nav navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" [routerLink]="['/']">Rooms <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="!currentUser || (currentUser && (currentUser.isRegistered || currentUser.isManager))" class="nav-link" [routerLink]="['register/hotel']">Register Hotel <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <ul class="nav navbar-nav ml-auto">
+        <li class="nav-item">
+          <a *ngIf="currentUser && currentUser.isManager" class="nav-link" [routerLink]="['/manager-panel']">Manager Panel</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="currentUser && (currentUser.isSuperAdmin || currentUser.isAdmin)" class="nav-link" [routerLink]="['/admin-panel']">Administrator Panel</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="currentUser && currentUser.isRegistered" class="nav-link" [routerLink]="['/my-reservations']">My Reservations</a>
+        </li>
+        <li class="nav-item">
+          <a *ngIf="!currentUser" class="nav-link" [routerLink]="['/login']">Login</a>
+          <a *ngIf="currentUser" class="nav-link" (click)="logout()">Logout</a>
+        </li>
+        <li class="nav-item" *ngIf="!currentUser">
+          <a class="nav-link" [routerLink]="['/register']">Register</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

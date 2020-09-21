@@ -81,9 +81,18 @@ namespace HotelApp.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Hotel manager")]
-        public IActionResult GetAllHotels()
+        public IActionResult GetAllHotels([FromBody] int statusId)
         {
             var hotels = _hotelRepository.GetAllHotelsForUser();
+            return Ok(hotels);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "SuperAdministrator, Administrator")]
+        [Route("pending")]
+        public IActionResult GetAllUnconfirmedHotels()
+        {
+            var hotels = _hotelRepository.GetAllUnconfirmedHotels();
             return Ok(hotels);
         }
     }

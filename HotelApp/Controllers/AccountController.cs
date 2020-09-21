@@ -13,6 +13,7 @@ using HotelApp.API.DbContexts.Entities;
 using HotelApp.API.Models;
 using HotelApp.API.Configuration;
 using Microsoft.AspNetCore.Authorization;
+using HotelApp.API.DbContexts;
 
 namespace HotelApp.API.Controllers
 {
@@ -23,15 +24,18 @@ namespace HotelApp.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
+        private readonly HotelAppContext _hotelAppContext;
 
         public AccountController(
                     UserManager<User> userManager,
                     RoleManager<UserRole> roleManager,
-                    JwtSettings jwtSettings)
+                    JwtSettings jwtSettings,
+                    HotelAppContext hotelAppContext)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwtSettings = jwtSettings;
+            _hotelAppContext = hotelAppContext;
         }
 
         [HttpPost]
@@ -46,6 +50,11 @@ namespace HotelApp.API.Controllers
                 loginInfo.UserName = user.UserName;
                 loginInfo.Token = token.Token;
                 loginInfo.Expiration = token.Expiration;
+                loginInfo.isRegistered = await _userManager.IsInRoleAsync(user, "Registered user");
+                Console.WriteLine(loginInfo.isRegistered);
+                loginInfo.isManager = await _userManager.IsInRoleAsync(user, "Hotel manager");
+                loginInfo.isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
+                loginInfo.isSuperAdmin = await _userManager.IsInRoleAsync(user, "SuperAdministrator");
                 return Ok(loginInfo);
             }
             return Unauthorized();
@@ -89,10 +98,20 @@ namespace HotelApp.API.Controllers
             });
         }
 
+        [Authorize(Roles = "SuperAdministrator, Administrator")]
+        [HttpGet]
+        public async Task<User[]> GetAllAdmins()
+        {
+            var users = await _userManager.GetUsersInRoleAsync("Administrator");
+            List<User> admins = new List<User>(users);
+            var adminList = admins.ToArray();
+            return adminList;
+        }
+
         [Authorize(Roles = "SuperAdministrator")]
         [HttpDelete]
         [Route("{id}")]
-        public async Task<ActionResult> DeleteAdministrator(string id)
+        public async Task<IActionResult> DeleteAdministrator(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
@@ -104,7 +123,7 @@ namespace HotelApp.API.Controllers
                     var result = await _userManager.RemoveFromRoleAsync(user, role);
                 }
             }
-
+            _hotelAppContext.Users.Remove(user);
             await _userManager.DeleteAsync(user);
             return Ok(new ResponseDTO
             {

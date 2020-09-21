@@ -62,6 +62,16 @@ namespace HotelApp.API.DbContexts.Repositories
             return _hotelAppContext.Hotels.Where(h => h.Name == name).ToList();
         }
 
+        public ICollection<Hotel> GetHotels()
+        {
+            return _hotelAppContext.Hotels.ToList();
+        }
+
+        public ICollection<Hotel> GetAllUnconfirmedHotels()
+        {
+            return _hotelAppContext.Hotels.Where(x => x.StatusId == 3)
+                              .ToList();
+        }
         public IEnumerable<Hotel> GetAllHotelsForUser()
         {
             var currentUser = _userResolverService.GetUser();

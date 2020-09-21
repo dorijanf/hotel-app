@@ -63,12 +63,52 @@ namespace HotelApp.API.DbContexts.Repositories
             return PagedList<Reservation>.ToPagedList(reservations,
                 reservationParameters.PageNumber,
                 reservationParameters.PageSize);
+        }
 
+        public int GetAllReservationsCount(ReservationParameters reservationParameters)
+        {
+            var currentUser = _userResolverService.GetUser();
+            var currentUserId = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            var reservations = _hotelAppContext.HotelUsers.Where(x => x.UserId == currentUserId)
+                                                          .Select(x => _hotelAppContext.Rooms
+                                                          .Where(y => y.HotelId == x.HotelId))
+                                                          .SelectMany(z => z.SelectMany(y => y.Reservations));
+
+            reservations = FilterReservations(ref reservations, reservationParameters);
+            reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
+            return reservations.Count();
+        }
+
+        public async Task<int> GetAllUserReservationsCount(ReservationParameters reservationParameters)
+        {
+            var currentUser = _userResolverService.GetUser();
+            var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            User user = await _userManager.FindByIdAsync(currentUserName);
+
+            var reservations = _hotelAppContext.Reservations.Where(x => x.RegisteredUser.UserName == user.Id);
+            reservations = FilterReservations(ref reservations, reservationParameters);
+            reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
+            return reservations.Count();
         }
 
         public IEnumerable<Reservation> GetAllReservations(int roomId, ReservationParameters reservationParameters)
         {
             var reservations = _hotelAppContext.Reservations.Where(x => x.RoomId == roomId);
+            reservations = FilterReservations(ref reservations, reservationParameters);
+            reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
+            return PagedList<Reservation>.ToPagedList(reservations,
+                reservationParameters.PageNumber,
+                reservationParameters.PageSize);
+        }
+
+        public async Task<IEnumerable<Reservation>> GetAllUserReservations(ReservationParameters reservationParameters)
+        {
+            var currentUser = _userResolverService.GetUser();
+            var currentUserName = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+            User user = await _userManager.FindByIdAsync(currentUserName);
+
+            var reservations = _hotelAppContext.Reservations.Where(x => x.RegisteredUserId == user.Id);
             reservations = FilterReservations(ref reservations, reservationParameters);
             reservations = _sort.ApplySort(reservations, reservationParameters.OrderBy);
             return PagedList<Reservation>.ToPagedList(reservations,
@@ -84,7 +124,17 @@ namespace HotelApp.API.DbContexts.Repositories
         public void UpdateReservationStatus(int reservationId, int statusId)
         {
             var reservation = _hotelAppContext.Reservations.Find(reservationId);
-            reservation.ReservationStatusId = statusId;
+            if (statusId == 4)
+            {
+                if ((DateTime.Now - reservation.DateFrom).TotalDays > 3)
+                {
+                    reservation.ReservationStatusId = statusId;
+                }
+            }
+            else
+            {
+                reservation.ReservationStatusId = statusId;
+            }
 
             _hotelAppContext.Reservations.Update(reservation);
             _hotelAppContext.SaveChanges();

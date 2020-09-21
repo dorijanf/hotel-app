@@ -1,0 +1,35 @@
+<div class="col-md-6 offset-md-3 mt-5">
+  <div class="card">
+      <h4 class="card-header">{{ buttonText }} room</h4>
+      <div class="card-body">
+          <form [formGroup]="registerRoom" (ngSubmit)="onSubmit()">
+              <div class="form-group">
+                  <label for="name">Name</label>
+                  <input type="text" formControlName="name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+                  <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                      <div *ngIf="f.name.errors.required">Room name is required</div>
+                  </div>
+              </div>
+              <div class="form-group">
+                <label for="numberOfBeds">Number of Beds</label>
+                <input type="number" formControlName="numberOfBeds" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.numberOfBeds.errors }" />
+                <div *ngIf="submitted && f.numberOfBeds.errors" class="invalid-feedback">
+                    <div *ngIf="f.numberOfBeds.errors.required">Number of beds in a room is required</div>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label for="price">Price</label>
+                  <input type="number" formControlName="price" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.price.errors }" />
+                  <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                      <div *ngIf="f.price.errors.required">Price is required</div>
+                  </div>
+              </div>
+              <button [disabled]="loading" class="btn btn-primary">
+                  <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                  {{ buttonText }}
+              </button>
+              <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{ error }}</div>
+          </form>
+      </div>
+  </div>
+</div>
