@@ -81,7 +81,7 @@ namespace HotelApp.API.Controllers
 
         [HttpGet]
         [Authorize(Roles = "Hotel manager")]
-        public IActionResult GetAllHotels([FromBody] int statusId)
+        public IActionResult GetAllHotels()
         {
             var hotels = _hotelRepository.GetAllHotelsForUser();
             return Ok(hotels);
