@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace HotelApp.API.DbContexts.Entities
 {
-    public class Room
+    public class Room : IDeleteable
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -15,5 +15,6 @@ namespace HotelApp.API.DbContexts.Entities
 
         public virtual Hotel Hotel { get; set; }
         public virtual ICollection<Reservation> Reservations { get; set; }
+        public bool IsDeleted { get; set; }
     }
 }

@@ -1,0 +1,50 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-6">
+      <ng-container *ngIf="(room$ | async) as room; else loading">
+
+        <h1>{{ room.name }}</h1>
+        <div><em>Number of beds: </em>{{ room.numberOfBeds }}</div>
+        <div><em>Price: </em>{{ room.price }}</div>
+        <div><em>Hotel: </em>{{ room.hotelId }}</div>
+
+        <div class="row">
+          <div class="col-md-6 col-sm-6 mb-4">
+            <a href="#">
+                  <img class="img-fluid" src="https://placehold.it/500x300" alt="">
+                </a>
+          </div>
+
+          <div class="col-md-6 col-sm-6 mb-4">
+            <a href="#">
+                  <img class="img-fluid" src="https://placehold.it/500x300" alt="">
+                </a>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 col-sm-6 mb-4">
+            <a href="#">
+                  <img class="img-fluid" src="https://placehold.it/500x300" alt="">
+                </a>
+          </div>
+
+          <div class="col-md-6 col-sm-6 mb-4">
+            <a href="#">
+                  <img class="img-fluid" src="https://placehold.it/500x300" alt="">
+                </a>
+          </div>
+          <a class="button btn-primary" routerLink="[/hotels/add-room]"></a>
+        </div>
+      </ng-container>
+      <a [routerLink]="['/']">View all rooms</a>
+      <ng-template #loading>Loading...</ng-template>
+    </div>
+    <div class="col-md-6">
+      <app-reservation *ngIf="currentUser"></app-reservation>
+      <div *ngIf="!currentUser">
+        <h3>You have to log in to book this room.</h3>
+        <app-login></app-login>
+      </div>
+    </div>
+  </div>
+</div>

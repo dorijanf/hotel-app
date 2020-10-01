@@ -1,0 +1,32 @@
+<h1>Hotels</h1>
+
+<table class="table table-responsive-md table-hover text-center">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Contact number</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let hotel of hotelcities">
+      <td><a [routerLink]="[hotel.id]">{{ hotel.name }} </a></td>
+      <td>{{ hotel.contactNumber }}</td>
+      <td>{{ hotel.email }}</td>
+      <td>{{ hotel.address }}</td>
+      <td>{{ (hotel.cityName | async)}}</td>
+      <div [ngSwitch]="hotel.statusId">
+        <td class="active" *ngSwitchCase="'1'">Active</td>
+        <td class="inactive" *ngSwitchCase="'2'">Inactive</td>
+        <td class="pending" *ngSwitchCase="'3'">Pending</td>
+        <td class="denied" *ngSwitchCase="'4'">Denied</td>
+      </div>
+    </tr>
+  </tbody>
+</table>
+<div class="justify-content-center">
+  <a class=text-center [routerLink]="['/manager-panel']"> Return to manager panel</a>
+</div>

@@ -1,0 +1,5 @@
+<h1>Admin panel</h1>
+<div class="col-md-6 offset-md-3 mt-5">
+  <a *ngIf="currentUser && currentUser.isSuperAdmin" [routerLink]="['admins']">View all admins</a><br />
+  <a [routerLink]="['hotels']">View all pending hotels</a>
+</div>

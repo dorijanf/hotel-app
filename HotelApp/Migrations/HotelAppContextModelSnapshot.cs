@@ -15,9 +15,108 @@ namespace HotelApp.API.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.7")
+                .HasAnnotation("ProductVersion", "3.1.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("HotelApp.API.DbContexts.Entities.City", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(50)")
+                        .HasMaxLength(50);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Cities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsDeleted = false,
+                            Name = "New York"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsDeleted = false,
+                            Name = "Paris"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsDeleted = false,
+                            Name = "London"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsDeleted = false,
+                            Name = "Zagreb"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsDeleted = false,
+                            Name = "Budapest"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsDeleted = false,
+                            Name = "Rijeka"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsDeleted = false,
+                            Name = "Tokyo"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsDeleted = false,
+                            Name = "Rio de Janeiro"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsDeleted = false,
+                            Name = "Cape Town"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsDeleted = false,
+                            Name = "Shanghai"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsDeleted = false,
+                            Name = "Madrid"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsDeleted = false,
+                            Name = "Rome"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsDeleted = false,
+                            Name = "Barcelona"
+                        });
+                });
 
             modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Config", b =>
                 {
@@ -29,6 +128,9 @@ namespace HotelApp.API.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -37,9 +139,6 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("Value")
                         .HasColumnType("int")
                         .HasMaxLength(50);
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -58,10 +157,10 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)")
-                        .HasMaxLength(50);
+                    b.Property<int>("CityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(1);
 
                     b.Property<string>("ContactNumber")
                         .IsRequired()
@@ -73,6 +172,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(50)")
                         .HasMaxLength(50);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -81,10 +183,9 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("StatusId")
                         .HasColumnType("int");
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("CityId");
 
                     b.HasIndex("StatusId");
 
@@ -97,6 +198,9 @@ namespace HotelApp.API.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -111,21 +215,25 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = 1,
+                            IsDeleted = false,
                             Name = "Active"
                         },
                         new
                         {
                             Id = 4,
+                            IsDeleted = false,
                             Name = "Denied"
                         },
                         new
                         {
                             Id = 2,
+                            IsDeleted = false,
                             Name = "Inactive"
                         },
                         new
                         {
                             Id = 3,
+                            IsDeleted = false,
                             Name = "Pending"
                         });
                 });
@@ -137,6 +245,9 @@ namespace HotelApp.API.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.HasKey("HotelId", "UserId");
 
@@ -161,6 +272,9 @@ namespace HotelApp.API.Migrations
                     b.Property<DateTime>("DateTo")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Note")
                         .HasColumnType("nvarchar(250)")
                         .HasMaxLength(250);
@@ -173,9 +287,6 @@ namespace HotelApp.API.Migrations
 
                     b.Property<int>("RoomId")
                         .HasColumnType("int");
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -195,6 +306,9 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -208,21 +322,25 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = 2,
+                            IsDeleted = false,
                             Name = "Accepted"
                         },
                         new
                         {
                             Id = 3,
+                            IsDeleted = false,
                             Name = "Denied"
                         },
                         new
                         {
                             Id = 1,
+                            IsDeleted = false,
                             Name = "Processing"
                         },
                         new
                         {
                             Id = 4,
+                            IsDeleted = false,
                             Name = "Cancelled"
                         });
                 });
@@ -237,6 +355,9 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("HotelId")
                         .HasColumnType("int");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(50)")
@@ -249,9 +370,6 @@ namespace HotelApp.API.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int")
                         .HasMaxLength(20);
-
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
@@ -277,6 +395,9 @@ namespace HotelApp.API.Migrations
                         .HasMaxLength(256);
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -312,9 +433,6 @@ namespace HotelApp.API.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<bool>("isDeleted")
-                        .HasColumnType("bit");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedEmail")
@@ -337,6 +455,9 @@ namespace HotelApp.API.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
@@ -358,28 +479,32 @@ namespace HotelApp.API.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "4166f733-0370-4d95-b26d-3efaf1ac435f",
+                            ConcurrencyStamp = "8f2ff38f-8740-4cd5-9ac4-dea6b8f9277d",
+                            IsDeleted = false,
                             Name = "SuperAdministrator",
                             NormalizedName = "superadministrator"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "15f13e13-0549-4b54-89bc-a605965277b9",
+                            ConcurrencyStamp = "a0e99b98-9e8e-4a31-85ea-0822976b37b7",
+                            IsDeleted = false,
                             Name = "Administrator",
                             NormalizedName = "administrator"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "f04d3646-94e1-4687-803d-7afd75710691",
+                            ConcurrencyStamp = "06b9196c-c84b-49fd-a4c8-8a4277f563ec",
+                            IsDeleted = false,
                             Name = "Hotel manager",
                             NormalizedName = "hotel manager"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "3dfa0888-832f-4b2c-8d10-4656a3b41f59",
+                            ConcurrencyStamp = "c1f8d155-3cb9-4728-a617-894fb7b93ebc",
+                            IsDeleted = false,
                             Name = "Registered user",
                             NormalizedName = "registered user"
                         });
@@ -491,6 +616,12 @@ namespace HotelApp.API.Migrations
 
             modelBuilder.Entity("HotelApp.API.DbContexts.Entities.Hotel", b =>
                 {
+                    b.HasOne("HotelApp.API.DbContexts.Entities.City", "City")
+                        .WithMany("Hotels")
+                        .HasForeignKey("CityId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("HotelApp.API.DbContexts.Entities.HotelStatus", "Status")
                         .WithMany("Hotels")
                         .HasForeignKey("StatusId")

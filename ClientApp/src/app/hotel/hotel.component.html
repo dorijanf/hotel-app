@@ -1,0 +1,77 @@
+<ng-container class="container" *ngIf="(hotel$ | async) as hotel; else loading">
+  <h1 class="my-4" >{{ hotel.name }}</h1>
+  <div class="row">
+
+    <div class="col-md-8">
+      <img class="img-fluid" src="https://placehold.it/750x500" alt="">
+    </div>
+
+    <div class="col-md-4">
+      <ul>
+        <li><strong>Contact number: </strong><br />{{ hotel.contactNumber }}</li>
+        <li><strong>Email: </strong><br />{{ hotel.email }} </li>
+        <li><strong>Address: </strong><br />{{ hotel.address }}, {{ (cityName$ | async) }}</li>
+      </ul>
+    </div>
+
+  </div>
+  <h3 class="my-4">Hotel Rooms</h3>
+  <p *ngIf="!(rooms$ | async)"><em>Loading rooms...</em></p>
+<form [formGroup]="resultsForm">
+  <div class="form-row">
+    <div class="text-left form-group col-md-6">
+      <div class="bs-select">
+          Show
+          <select formControlName="rooms" (change)="setNumberOfResults($event)">
+            <option *ngFor="let room of roomsPerPageResults">{{ room }}</option>
+          </select>
+          rooms
+      </div>
+    </div>
+    <div class="form-group text-right col-md-6">
+      <label for="nOfBeds">Number of beds:</label>
+      <input placeholder="Search by bed number" formControlName="nOfBeds" (change)="setNumberOfBeds($event)" type=number>
+    </div>
+  </div>
+</form>
+
+<table class="table table-responsive-md table-hover text-center"
+  *ngIf="(rooms$ | async)?.length>0">
+  <thead>
+    <tr>
+      <th (click)="setOrderBy('name')">Name
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'name'}" [icon]="faCaretUp"></fa-icon>
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'name desc'}" [icon]="faCaretDown"></fa-icon>
+      </th>
+      <th (click)="setOrderBy('numberOfBeds')">Number of beds
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'numberOfBeds'}" [icon]="faCaretUp"></fa-icon>
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'numberOfBeds desc'}" [icon]="faCaretDown"></fa-icon>
+      </th>
+      <th (click)="setOrderBy('price')">Price
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'price'}" [icon]="faCaretUp"></fa-icon>
+        <fa-icon [ngClass]="{'text-primary': orderBy == 'price desc'}" [icon]="faCaretDown"></fa-icon>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let room of (rooms$ | async)">
+      <td><a [routerLink]="['rooms', room.id]">{{ room.name }} </a></td>
+      <td>{{ room.numberOfBeds }}</td>
+      <td>{{ room.price }}</td>
+    </tr>
+  </tbody>
+</table>
+<div class="container">
+      <ul class="pagination justify-content-center">
+        <li *ngFor="let page of pageField;let i=index" class="page-item">
+          <a (click)="showRoomsByPageNumber(page,i)" [ngClass]="pageNumber[i] ? 'page-link-active':'page-link'"
+            style=" margin-right: 5px; margin-top: 5px;">{{page}}</a>
+
+        </li>
+      </ul>
+      <div class="text-center">
+        Page {{ pageNo }} of {{ paginationService.exactPageList }} Pages
+      </div><br />
+</div>
+<ng-template #loading>Loading...</ng-template>
+</ng-container>

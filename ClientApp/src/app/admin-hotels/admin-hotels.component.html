@@ -1,0 +1,49 @@
+<h1>Hotels</h1>
+
+<table class="table table-responsive-md table-hover text-center">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Contact number</th>
+      <th>Email</th>
+      <th>Address</th>
+      <th>City</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let hotelcity of hotelcities">
+      <td><a [routerLink]="['/hotels', hotelcity.id]">{{ hotelcity.name }} </a></td>
+      <td>{{ hotelcity.contactNumber }}</td>
+      <td>{{ hotelcity.email }}</td>
+      <td>{{ hotelcity.address }}</td>
+      <td>{{ (hotelcity.cityName | async) }}</td>
+      <div [ngSwitch]="hotelcity.statusId">
+        <td class="active" *ngSwitchCase="'1'">Active</td>
+        <td class="inactive" *ngSwitchCase="'2'">Inactive</td>
+        <td class="pending" *ngSwitchCase="'3'">Pending</td>
+        <td class="denied" *ngSwitchCase="'4'">Denied</td>
+      </div>
+      <td><button (click)="updateStatus(verify)" class="btn btn-success">Verify</button>
+        <button (click)="updateStatus(deny)" class="btn btn-danger">Deny</button></td>
+        <ng-template #verify>
+          <div class="modal-body text-center">
+            <p>Verify this hotel?</p>
+            <button type="button" class="btn btn-default" (click)="confirm(hotelcity.id, 1)" >Yes</button>
+            <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+          </div>
+        </ng-template>
+        <ng-template #deny>
+          <div class="modal-body text-center">
+            <p>Deny this hotel?</p>
+            <button type="button" class="btn btn-default" (click)="confirm(hotelcity.id, 4)" >Yes</button>
+            <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
+          </div>
+        </ng-template>
+    </tr>
+  </tbody>
+</table>
+<div class="justify-content-center">
+  <a class=text-center [routerLink]="['/manager-panel']"> Return to manager panel</a>
+</div>
+

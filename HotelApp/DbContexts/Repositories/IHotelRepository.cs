@@ -13,7 +13,10 @@ namespace HotelApp.API.DbContexts.Repositories
         void UpdateHotelStatus(int hotelId, int statusId);
         Hotel GetHotelByName(string name);
         Hotel GetHotelById(int id);
-        public ICollection<Hotel> GetAllHotelsWithSameName(string name);
-        public IEnumerable<Hotel> GetAllHotels();
+        ICollection<Hotel> GetHotels();
+        ICollection<Hotel> GetAllUnconfirmedHotels();
+        ICollection<Hotel> GetAllHotelsWithSameName(string name); 
+        IEnumerable<Hotel> GetAllHotelsForUser();
+        City GetHotelCityName(int id);
     }
 }

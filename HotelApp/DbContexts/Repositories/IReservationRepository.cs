@@ -11,6 +11,8 @@ namespace HotelApp.API.DbContexts.Repositories
         void UpdateReservationStatus(int reservationId, int statusId);
         Reservation GetReservationById(int id);
         IEnumerable<Reservation> GetAllReservations(ReservationParameters reservationParameters);
-        IEnumerable<Reservation> GetAllReservations(int roomId, ReservationParameters reservationParameters);
+        int GetAllReservationsCount(ReservationParameters reservationParameters);
+        Task<IEnumerable<Reservation>> GetAllUserReservations(ReservationParameters reservationParameters);
+        Task<int> GetAllUserReservationsCount(ReservationParameters reservationParameters);
     }
 }

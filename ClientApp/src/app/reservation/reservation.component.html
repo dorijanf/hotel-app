@@ -1,0 +1,49 @@
+<div class="card">
+  <h4 class="card-header">Book this room!</h4>
+  <div class="card-body">
+    <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()">
+      <div class="form-group row">
+        <label for="dateFrom">From:</label>
+        <input
+        type="text"
+        placeholder="Datepicker"
+        class="form-control"
+        formControlName="dateFrom"
+        bsDatepicker
+        [minDate]="minDateFrom"
+        [ngClass]="{ 'is-invalid': submitted && f.dateFrom.errors }"
+        [bsConfig]="{ isAnimated: true }"
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+        <div *ngIf="submitted && f.dateFrom.errors" class="invalid-feedback">
+          <div *ngIf="f.dateFrom.errors.required">Reservation start date is required</div>
+        </div>
+        <label for="dateFrom">To:</label>
+        <input
+        type="text"
+        placeholder="Datepicker"
+        class="form-control"
+        formControlName="dateTo"
+        bsDatepicker
+        [minDate]="minDateFrom"
+        [ngClass]="{ 'is-invalid': submitted && f.dateTo.errors }"
+        [bsConfig]="{ isAnimated: true } "
+        [bsConfig]="{ dateInputFormat: 'DD/MM/YYYY' }">
+        <div *ngIf="submitted && f.dateTo.errors" class="invalid-feedback">
+          <div *ngIf="f.dateTo.errors.required">Reservation start date is required</div>
+        </div>
+      </div>
+    <div class="form-group row">
+      <label for="note">Make a note:</label><br />
+      <textarea class="form-control" formControlName="note" maxlength=255>
+      </textarea>
+    </div>
+    <div class="row">
+      <button [disabled]="loading" class="btn btn-primary">
+        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+        Book
+      </button>
+      <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+    </div>
+  </form>
+  </div>
+</div>

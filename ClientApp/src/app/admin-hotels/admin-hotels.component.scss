@@ -1,0 +1,23 @@
+.active {
+  font-weight: bold;
+  color: rgb(20, 153, 20);
+}
+
+.inactive {
+  font-weight: bold;
+  color: rgb(87, 87, 87);
+}
+
+.pending {
+  font-weight: bold;
+  color: rgb(226, 190, 29);
+}
+
+.denied {
+  font-weight: bold;
+  color: rgb(153, 20, 20);
+}
+
+div {
+  display: inline;
+}
