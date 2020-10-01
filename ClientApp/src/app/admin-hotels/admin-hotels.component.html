@@ -1,7 +1,6 @@
 <h1>Hotels</h1>
 
-<table class="table table-responsive-md table-hover text-center"
-  *ngIf="(hotels$ | async)?.length>0">
+<table class="table table-responsive-md table-hover text-center">
   <thead>
     <tr>
       <th>Name</th>
@@ -13,13 +12,13 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let hotel of (hotels$ | async)">
-      <td><a [routerLink]="['/hotels', hotel.id]">{{ hotel.name }} </a></td>
-      <td>{{ hotel.contactNumber }}</td>
-      <td>{{ hotel.email }}</td>
-      <td>{{ hotel.address }}</td>
-      <td>{{ hotel.city }}</td>
-      <div [ngSwitch]="hotel.statusId">
+    <tr *ngFor="let hotelcity of hotelcities">
+      <td><a [routerLink]="['/hotels', hotelcity.id]">{{ hotelcity.name }} </a></td>
+      <td>{{ hotelcity.contactNumber }}</td>
+      <td>{{ hotelcity.email }}</td>
+      <td>{{ hotelcity.address }}</td>
+      <td>{{ (hotelcity.cityName | async) }}</td>
+      <div [ngSwitch]="hotelcity.statusId">
         <td class="active" *ngSwitchCase="'1'">Active</td>
         <td class="inactive" *ngSwitchCase="'2'">Inactive</td>
         <td class="pending" *ngSwitchCase="'3'">Pending</td>
@@ -30,14 +29,14 @@
         <ng-template #verify>
           <div class="modal-body text-center">
             <p>Verify this hotel?</p>
-            <button type="button" class="btn btn-default" (click)="confirm(hotel.id, 1)" >Yes</button>
+            <button type="button" class="btn btn-default" (click)="confirm(hotelcity.id, 1)" >Yes</button>
             <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
           </div>
         </ng-template>
         <ng-template #deny>
           <div class="modal-body text-center">
             <p>Deny this hotel?</p>
-            <button type="button" class="btn btn-default" (click)="confirm(hotel.id, 4)" >Yes</button>
+            <button type="button" class="btn btn-default" (click)="confirm(hotelcity.id, 4)" >Yes</button>
             <button type="button" class="btn btn-primary" (click)="decline()" >No</button>
           </div>
         </ng-template>

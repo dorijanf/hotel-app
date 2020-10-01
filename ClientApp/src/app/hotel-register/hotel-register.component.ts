@@ -17,6 +17,8 @@ export class HotelRegisterComponent implements OnInit {
     registerHotel: FormGroup;
     @Input() hotel$: Hotel
     @Input() hotelId: number;
+    cityId: number;
+    cityName: string;
     buttonText: string;
     loading = false;
     submitted = false;
@@ -40,6 +42,10 @@ export class HotelRegisterComponent implements OnInit {
       this.returnUrl = this.avRoute.snapshot.queryParams['returnUrl'] || '/';
     }
 
+    loadHotelCityName() {
+      this.hotelService.getHotelCityName(this.hotel$.id, this.hotel$.cityId).subscribe((res) => this.cityName = res.name);
+    }
+
     changeMethod() {
       if(this.hotel$ === undefined || this.hotel$ === null){
         this.registerHotel = this.formBuilder.group({
@@ -52,12 +58,13 @@ export class HotelRegisterComponent implements OnInit {
         this.buttonText = 'Register';
       }
       else {
+        this.loadHotelCityName();
         this.registerHotel = this.formBuilder.group({
           name: [this.hotel$.name, Validators.required],
           contactnumber: [this.hotel$.contactNumber, Validators.required],
           email: [this.hotel$.email, Validators.required],
           address: [this.hotel$.address, Validators.required],
-          city: [this.hotel$.city, Validators.required]
+          city: [this.cityName, Validators.required]
         });
         this.buttonText = 'Edit';
       }
@@ -83,8 +90,7 @@ export class HotelRegisterComponent implements OnInit {
                   let tempData = JSON.parse(JSON.stringify(data));
                   this.currentUser.isManager = true;
                   this.hotelId = tempData.entityId;
-                  this.alertService.success('Hotel successfully registered!', true);
-                  this.router.navigate(['/hotels/', this.hotelId]);
+                  this.router.navigate(['/manager-panel/hotels']);
                 },
                 (error : any) => {
                   this.error = error;

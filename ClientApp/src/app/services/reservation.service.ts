@@ -40,7 +40,6 @@ export class ReservationService {
   }
 
   getUserReservations(pageNumber, pageSize, orderBy) : Observable<Reservation[]> {
-    console.log(this.myAppUrl + 'api/user-reservations' + '?pagenumber=' + pageNumber + '&pageSize=' + pageSize + '&orderBy=' + orderBy);
     return this.http.get<Reservation[]>(this.myAppUrl + 'api/user-reservations' + '?pagenumber=' + pageNumber + '&pageSize=' + pageSize + '&orderBy=' + orderBy);
   }
 
@@ -49,6 +48,6 @@ export class ReservationService {
   }
 
   updateReservationStatus(statusId, roomId, reservationId) {
-    return this.http.put(this.myAppUrl + this.myApiUrl + '/' + roomId + '/reservations/' + reservationId, statusId);
+    return this.http.put(this.myAppUrl + this.myApiUrl + '/' + roomId + '/reservations/' + reservationId, Number(statusId), {responseType: 'text'});
   }
 }

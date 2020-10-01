@@ -18,7 +18,9 @@
     </div>
     <div class="form-group text-right col-md-4">
       <label for="city">City:</label>
-      <input placeholder="Search by city" formControlName="city" (change)="setCity($event)">
+      <select placeholder="Search by city" formControlName="city" (change)="setCity($event)">
+        <option *ngFor="let city of (cities$ | async)" value="{{ city.id }}">{{ city.name }}</option>
+      </select>
     </div>
   </div>
 </form>
@@ -47,7 +49,7 @@
       <td><a [routerLink]="['rooms', room.id]">{{ room.name }} </a></td>
       <td>{{ room.numberOfBeds }}</td>
       <td>{{ room.price }}</td>
-      <td><a [routerLink]="['hotels', room.hotelId]">{{ room.hotelId }}</a></td>
+      <td><a [routerLink]="['hotels', room.hotelId]">View hotel</a></td>
     </tr>
   </tbody>
 </table>

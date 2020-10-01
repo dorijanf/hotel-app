@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Room } from '../models/room';
+import { City } from '../models/city';
+import { JsonPipe } from '@angular/common';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -59,6 +62,10 @@ export class RoomsService {
       return this.http.get<number>(searchQuery);
     }
 
+    getCities() : Observable<City[]> {
+      return this.http.get<City[]>(this.myAppUrl + 'cities');
+    }
+
     getSingleRoom(roomId: number): Observable<Room> {
       return this.http.get<Room>(this.myAppUrl + this.myApiUrl +  roomId);
     }
@@ -69,20 +76,20 @@ export class RoomsService {
 
     updateRoom(roomId: number, name: string, numberOfBeds: number, price: number, hotelId: number) {
       var data = {
-        name: name,
-        numberOfBeds: numberOfBeds,
-        price: price,
-        hotelId: Number(hotelId)
+        "name": name,
+        "numberOfBeds": numberOfBeds,
+        "price": price,
+        "hotelId": Number(hotelId)
       }
       return this.http.put(this.myAppUrl + 'api/' + hotelId + '/rooms/' + roomId, data);
     }
 
     registerRoom(name: string, numberOfBeds: number, price: number, hotelId: number) {
       var data = {
-        name: name,
-        numberOfBeds: numberOfBeds,
-        price: price,
-        hotelId: Number(hotelId)
+        "name": name,
+        "numberOfBeds": numberOfBeds,
+        "price": price,
+        "hotelId": Number(hotelId)
       }
       return this.http.post(this.myAppUrl + 'api/' + hotelId + '/rooms', data);
     }

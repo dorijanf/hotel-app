@@ -25,6 +25,8 @@ export class MyReservationListComponent implements OnInit {
   orderBy: any = 'CreationDate';
   dateCreated: string;
   statusId: number;
+  error = '';
+  loading = false;
   faCaretUp = faCaretUp;
   faCaretDown = faCaretDown;
 
@@ -101,9 +103,15 @@ export class MyReservationListComponent implements OnInit {
     this.reservationService.updateReservationStatus(statusId, roomId, reservationId)
       .subscribe(
         data => {
+        console.log(data);
         this.alertService.success('Room successfully cancelled!', true);
-        window.location.reload();
-        }
+        this.ngOnInit();
+        },
+        (error: any) => {
+        this.error = error;
+        console.log(this.error);
+        this.loading = false;
+      }
     )
   }
 

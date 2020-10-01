@@ -15,7 +15,8 @@ namespace HotelApp.API.DbContexts.Repositories
         Hotel GetHotelById(int id);
         ICollection<Hotel> GetHotels();
         ICollection<Hotel> GetAllUnconfirmedHotels();
-        public ICollection<Hotel> GetAllHotelsWithSameName(string name);
-        public IEnumerable<Hotel> GetAllHotelsForUser();
+        ICollection<Hotel> GetAllHotelsWithSameName(string name); 
+        IEnumerable<Hotel> GetAllHotelsForUser();
+        City GetHotelCityName(int id);
     }
 }

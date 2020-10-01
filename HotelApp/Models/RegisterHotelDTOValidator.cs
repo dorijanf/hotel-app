@@ -1,11 +1,9 @@
-﻿   using FluentValidation;
+﻿using FluentValidation;
 using HotelApp.API.DbContexts.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 namespace HotelApp.API.Models
 {
@@ -44,7 +42,7 @@ namespace HotelApp.API.Models
             RuleFor(x => x.Address).NotEmpty()
                 .WithMessage("Hotel address is required.");
 
-            RuleFor(x => x.City).NotEmpty()
+            RuleFor(x => x.CityName).NotEmpty()
                 .WithMessage("Specifying the city where the hotel is located is required.");
 
             RuleFor(x => x.StatusId).Must(StatusIdValidation)

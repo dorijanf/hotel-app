@@ -1,5 +1,5 @@
 <ng-container class="container" *ngIf="(hotel$ | async) as hotel; else loading">
-  <h1 class="my-4">{{ hotel.name }}</h1>
+  <h1 class="my-4" >{{ hotel.name }}</h1>
   <div class="row">
 
     <div class="col-md-8">
@@ -10,7 +10,7 @@
       <ul>
         <li><strong>Contact number: </strong><br />{{ hotel.contactNumber }}</li>
         <li><strong>Email: </strong><br />{{ hotel.email }} </li>
-        <li><strong>Address: </strong><br />{{ hotel.address }}, {{ hotel.city}}</li>
+        <li><strong>Address: </strong><br />{{ hotel.address }}, {{ (cityName$ | async) }}</li>
       </ul>
     </div>
 

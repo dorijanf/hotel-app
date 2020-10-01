@@ -56,7 +56,6 @@ export class RoomRegisterComponent implements OnInit {
     }
 
     if(this.roomId != null || this.roomId != undefined) {
-      console.log(this.roomId);
       this.room$ = this.roomsService.getSingleRoom(this.roomId);
       this.room$.subscribe(room => {
         this.changeMethod(room);
@@ -117,13 +116,14 @@ export class RoomRegisterComponent implements OnInit {
           this.hotelId)
           .subscribe(
               data => {
-                  this.alertService.success('Room updated successfully', true);
-                  this.router.navigate(['manager-panel/hotels/', this.hotelId]);
+                console.log(data);
+                this.alertService.success('Room updated successfully', true)
               },
               (error : any) => {
-                  this.error = error;
-                  this.loading = false;
+                this.error = error;
+                this.loading = false;
               });
+        this.router.navigate(['manager-panel/hotels/', this.hotelId]);
     }
   }
 }

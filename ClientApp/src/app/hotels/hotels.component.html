@@ -1,7 +1,6 @@
 <h1>Hotels</h1>
 
-<table class="table table-responsive-md table-hover text-center"
-  *ngIf="(hotels$ | async)?.length>0">
+<table class="table table-responsive-md table-hover text-center">
   <thead>
     <tr>
       <th>Name</th>
@@ -13,12 +12,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let hotel of (hotels$ | async)">
+    <tr *ngFor="let hotel of hotelcities">
       <td><a [routerLink]="[hotel.id]">{{ hotel.name }} </a></td>
       <td>{{ hotel.contactNumber }}</td>
       <td>{{ hotel.email }}</td>
       <td>{{ hotel.address }}</td>
-      <td>{{ hotel.city }}</td>
+      <td>{{ (hotel.cityName | async)}}</td>
       <div [ngSwitch]="hotel.statusId">
         <td class="active" *ngSwitchCase="'1'">Active</td>
         <td class="inactive" *ngSwitchCase="'2'">Inactive</td>

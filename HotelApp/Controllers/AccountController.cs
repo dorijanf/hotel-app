@@ -13,7 +13,7 @@ using HotelApp.API.DbContexts.Entities;
 using HotelApp.API.Models;
 using HotelApp.API.Configuration;
 using Microsoft.AspNetCore.Authorization;
-using HotelApp.API.DbContexts;
+using HotelApp.API.Extensions.Exceptions;
 
 namespace HotelApp.API.Controllers
 {
@@ -24,40 +24,41 @@ namespace HotelApp.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<UserRole> _roleManager;
         private readonly JwtSettings _jwtSettings;
-        private readonly HotelAppContext _hotelAppContext;
 
         public AccountController(
                     UserManager<User> userManager,
                     RoleManager<UserRole> roleManager,
-                    JwtSettings jwtSettings,
-                    HotelAppContext hotelAppContext)
+                    JwtSettings jwtSettings)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _jwtSettings = jwtSettings;
-            _hotelAppContext = hotelAppContext;
         }
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginUserDTO model)
+        public async Task<LoginResponseDTO> Login([FromBody] LoginUserDTO model)
         {
             var user = await _userManager.FindByNameAsync(model.UserName);
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
                 var token = await CreateTokenAsync(user);
-                var loginInfo = new LoginResponseDTO();
-                loginInfo.UserName = user.UserName;
-                loginInfo.Token = token.Token;
-                loginInfo.Expiration = token.Expiration;
-                loginInfo.isRegistered = await _userManager.IsInRoleAsync(user, "Registered user");
-                Console.WriteLine(loginInfo.isRegistered);
-                loginInfo.isManager = await _userManager.IsInRoleAsync(user, "Hotel manager");
-                loginInfo.isAdmin = await _userManager.IsInRoleAsync(user, "Administrator");
-                loginInfo.isSuperAdmin = await _userManager.IsInRoleAsync(user, "SuperAdministrator");
-                return Ok(loginInfo);
+                var loginInfo = new LoginResponseDTO
+                {
+                    UserName = user.UserName,
+                    Token = token.Token,
+                    Expiration = token.Expiration,
+                    isRegistered = await _userManager.IsInRoleAsync(user, "Registered user"),
+                    isManager = await _userManager.IsInRoleAsync(user, "Hotel manager"),
+                    isAdmin = await _userManager.IsInRoleAsync(user, "Administrator"),
+                    isSuperAdmin = await _userManager.IsInRoleAsync(user, "SuperAdministrator")
+                };
+                if (loginInfo != null)
+                {
+                    return loginInfo;
+                }
             }
-            return Unauthorized();
+            throw new NotAuthorizedException("Invalid username or password.");
         }
 
         [HttpPost]
@@ -67,10 +68,10 @@ namespace HotelApp.API.Controllers
             var userExists = await _userManager.FindByNameAsync(model.UserName);
             if (userExists != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
+                return StatusCode(StatusCodes.Status400BadRequest,
                                     new ResponseDTO
                                     {
-                                        Status = "Error",
+                                        StatusCode = 400,
                                         Message = "User already exists!"
                                     });
             }
@@ -79,10 +80,10 @@ namespace HotelApp.API.Controllers
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError,
+                return StatusCode(StatusCodes.Status400BadRequest,
                                     new ResponseDTO
                                     {
-                                        Status = "Error",
+                                        StatusCode = 400,
                                         Message = "Cannot create user! Please check registration details and try again."
                                     });
             await _userManager.AddToRoleAsync(user, "Registered user");
@@ -91,43 +92,33 @@ namespace HotelApp.API.Controllers
             {
             }
 
-            return Ok(new ResponseDTO 
-            { 
-                Status = "Success", 
+            return Ok(new ResponseDTO
+            {
+                StatusCode = 200,
                 Message = "User created successfully!"
             });
-        }
-
-        [Authorize(Roles = "SuperAdministrator, Administrator")]
-        [HttpGet]
-        public async Task<User[]> GetAllAdmins()
-        {
-            var users = await _userManager.GetUsersInRoleAsync("Administrator");
-            List<User> admins = new List<User>(users);
-            var adminList = admins.ToArray();
-            return adminList;
         }
 
         [Authorize(Roles = "SuperAdministrator")]
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteAdministrator(string id)
+        public async Task<ActionResult> DeleteAdministrator(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
             var userRoles = await _userManager.GetRolesAsync(user);
 
-            if(userRoles.Count() > 0)
+            if (userRoles.Count() > 0)
             {
-                foreach(var role in userRoles.ToList())
+                foreach (var role in userRoles.ToList())
                 {
                     var result = await _userManager.RemoveFromRoleAsync(user, role);
                 }
             }
-            _hotelAppContext.Users.Remove(user);
+
             await _userManager.DeleteAsync(user);
             return Ok(new ResponseDTO
             {
-                Status = "Success",
+                StatusCode = 200,
                 Message = "Administrator deleted successfully!"
             });
         }
@@ -138,12 +129,12 @@ namespace HotelApp.API.Controllers
         public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDTO model)
         {
             var userExists = await _userManager.FindByNameAsync(model.UserName);
-            if(userExists != null)
+            if (userExists != null)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError,
+                return StatusCode(StatusCodes.Status400BadRequest,
                                     new ResponseDTO
                                     {
-                                        Status = "Error",
+                                        StatusCode = 400,
                                         Message = "User already exists!"
                                     });
             }
@@ -151,21 +142,22 @@ namespace HotelApp.API.Controllers
 
             var result = await _userManager.CreateAsync(user, model.Password);
             if (!result.Succeeded)
-                return StatusCode(StatusCodes.Status500InternalServerError,
+                return StatusCode(StatusCodes.Status400BadRequest,
                                     new ResponseDTO
                                     {
-                                        Status = "Error",
+                                        StatusCode = 400,
                                         Message = "Cannot create user! Please check registration details and try again."
                                     });
 
             if (await _roleManager.RoleExistsAsync("Administrator"))
-            { 
+            {
                 await _userManager.AddToRoleAsync(user, "Administrator");
             }
 
-            return Ok(new ResponseDTO { 
-                Status = "Success", 
-                Message = "Administrator created successfully!" 
+            return Ok(new ResponseDTO
+            {
+                StatusCode = 400,
+                Message = "Administrator created successfully!"
             });
         }
 
@@ -204,6 +196,17 @@ namespace HotelApp.API.Controllers
                 Token = new JwtSecurityTokenHandler().WriteToken(token),
                 Expiration = expires
             };
+        }
+
+        [Authorize(Roles = "SuperAdministrator, Administrator")]
+        [HttpGet]
+        public async Task<User[]> GetAllAdmins()
+        {
+            // gets a list of all users that are in the Administrator role
+            var users = await _userManager.GetUsersInRoleAsync("Administrator");
+            List<User> admins = new List<User>(users);
+            var adminList = admins.ToArray();
+            return adminList;
         }
     }
 }

@@ -22,16 +22,11 @@ namespace HotelApp.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Registered user")]
-        public async Task<IActionResult> RegisterHotel([FromBody] RegisterHotelDTO model)
+        public IActionResult RegisterHotel([FromBody] RegisterHotelDTO model)
         {
-            var hotelId = await _hotelRepository.CreateHotelAsync(model);
-
-            return Ok(new ResponseDTO
-            {
-                Status = "Success",
-                Message = "Hotel registered successfully!",
-                EntityId = hotelId
-            });
+            // creates a hotel and assigns the currently logged in user the hotel manager role
+            var hotelId = _hotelRepository.CreateHotelAsync(model).Result;
+            return Ok(hotelId);
         }
 
         [HttpPut]
@@ -39,12 +34,9 @@ namespace HotelApp.API.Controllers
         [Route("{id}")]
         public IActionResult UpdateHotel(int id, [FromBody] RegisterHotelDTO model)
         {
+            // updates hotel data and requires 5 strings (hotel name, contact number, email, address, city name) 
             _hotelRepository.UpdateHotelAsync(id, model);
-            return Ok(new ResponseDTO
-            {
-                Status = "Success",
-                Message = "Hotel updated successfully!"
-            });
+            return Ok("Hotel successfully updated!");
         }
 
         [HttpPut]
@@ -52,12 +44,9 @@ namespace HotelApp.API.Controllers
         [Route("{id}/status")]
         public IActionResult UpdateHotelStatus(int id, [FromBody] int statusId)
         {
+            // updates hotel status by assigning an integer (status id) to the status id property of the hotel
             _hotelRepository.UpdateHotelStatus(id, statusId);
-            return Ok(new ResponseDTO
-            {
-                Status = "Success",
-                Message = "Hotel status updated successfully!"
-            });
+            return Ok("Hotel status successfully updated!");
         }
 
         [HttpGet]
@@ -65,26 +54,28 @@ namespace HotelApp.API.Controllers
         [Route("{id}")]
         public IActionResult GetSingleHotel(int id)
         {
+            // gets a single hotel by the id of the hotel
             var hotel = _hotelRepository.GetHotelById(id);
-            if (hotel != null)
-            {
-                return Ok(hotel);
-            }
-
-            return StatusCode(StatusCodes.Status404NotFound,
-                new ResponseDTO
-                {
-                    Status = "Error",
-                    Message = "Hotel does not exist."
-                });
+            return Ok(hotel);
         }
 
         [HttpGet]
         [Authorize(Roles = "Hotel manager")]
         public IActionResult GetAllHotels()
         {
+            // gets a list of all hotels for a specific user that is in the role of a hotel manager
             var hotels = _hotelRepository.GetAllHotelsForUser();
             return Ok(hotels);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("{hotelId}/city-name/{cityId}")]
+        public IActionResult GetHotelCityName([FromRoute] int cityId)
+        {
+            // gets the name of the city where the hotel is located
+            var city = _hotelRepository.GetHotelCityName(cityId);
+            return Ok(city);
         }
 
         [HttpGet]
@@ -92,6 +83,7 @@ namespace HotelApp.API.Controllers
         [Route("pending")]
         public IActionResult GetAllUnconfirmedHotels()
         {
+            // gets a list of all unconfirmed hotels 
             var hotels = _hotelRepository.GetAllUnconfirmedHotels();
             return Ok(hotels);
         }

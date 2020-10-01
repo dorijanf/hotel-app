@@ -1,4 +1,3 @@
-using System;
 using System.Text;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -20,6 +19,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.OpenApi.Models;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Newtonsoft.Json;
+using Serilog;
+using HotelApp.API.Extensions.GlobalExceptionHandler;
 
 namespace HotelApp
 {
@@ -28,13 +29,26 @@ namespace HotelApp
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            CreateSerilogLogger(configuration);
         }
 
+        private void CreateSerilogLogger(IConfiguration configuration)
+        {
+            Log.Logger = new LoggerConfiguration()
+                .ReadFrom.Configuration(configuration)
+                .WriteTo.Console()
+                .WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
+                .CreateLogger();
+        }
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging((builder) =>
+            {
+                builder.AddSerilog(dispose: true);
+            });
             services.AddControllers(options =>
             {
             }).AddFluentValidation()
@@ -88,12 +102,16 @@ namespace HotelApp
             // Helpers
             services.AddScoped<ISort<Room>, Sort<Room>>();
             services.AddScoped<ISort<Reservation>, Sort<Reservation>>();
-            
+
+            // Controller Services
+            //services.AddScoped<IAccountService, AccountService>();
+
             // Repositories
             services.AddScoped<IHotelRepository, HotelRepository>();
             services.AddScoped<IHotelStatusRepository, HotelStatusRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IReservationRepository, ReservationRepository>();
+            services.AddScoped<ICityRepository, CityRepository>();
 
             // DB Context
             services.AddDbContextPool<HotelAppContext>(options =>
@@ -132,12 +150,15 @@ namespace HotelApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseMiddleware(typeof(ExceptionMiddleware));
             }
+
+            app.UseMiddleware(typeof(ExceptionMiddleware));
 
             app.UseCors("CorsPolicy");
 

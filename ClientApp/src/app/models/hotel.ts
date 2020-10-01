@@ -4,6 +4,7 @@ export class Hotel {
   contactNumber: string;
   email: string;
   address: string;
-  city: string;
+  cityId: number;
+  cityName: string;
   statusId: number;
 }

@@ -27,6 +27,26 @@
     <Compile Remove="Migrations\20200903071307_roomreservationrelationship.Designer.cs" />
     <Compile Remove="Migrations\20200903072831_roomreservationrelationship.cs" />
     <Compile Remove="Migrations\20200903072831_roomreservationrelationship.Designer.cs" />
+    <Compile Remove="Migrations\20200923142248_CityEntity.cs" />
+    <Compile Remove="Migrations\20200923142248_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200923142750_CityEntity.cs" />
+    <Compile Remove="Migrations\20200923142750_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200924065022_CityEntity.cs" />
+    <Compile Remove="Migrations\20200924065022_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200924065231_CityEntity.cs" />
+    <Compile Remove="Migrations\20200924065231_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200924070010_CityEntity.cs" />
+    <Compile Remove="Migrations\20200924070010_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200924070732_CityEntity.cs" />
+    <Compile Remove="Migrations\20200924070732_CityEntity.Designer.cs" />
+    <Compile Remove="Migrations\20200924071050_CityEntity2.cs" />
+    <Compile Remove="Migrations\20200924071050_CityEntity2.Designer.cs" />
+    <Compile Remove="Migrations\20200924071941_CityId.cs" />
+    <Compile Remove="Migrations\20200924071941_CityId.Designer.cs" />
+    <Compile Remove="Migrations\20200924072648_CityId.cs" />
+    <Compile Remove="Migrations\20200924072648_CityId.Designer.cs" />
+    <Compile Remove="Migrations\20200929085007_userIsDeletable.cs" />
+    <Compile Remove="Migrations\20200929085007_userIsDeletable.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -48,7 +68,10 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="3.4.0" />
+    <PackageReference Include="Serilog.Extensions.Logging" Version="3.0.1" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.2" />
     <PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.2" />
   </ItemGroup>
 

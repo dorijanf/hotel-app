@@ -20,11 +20,21 @@ export class UserService {
     }
 
     register(username: string, email: string, password: string) {
-        return this.http.post(this.myAppUrl + this.myApiUrl + 'register', { username, email, password});
+      var data = {
+        userName: username,
+        email: email,
+        password: password
+      }
+      return this.http.post(this.myAppUrl + this.myApiUrl + 'register', data);
     }
 
     registerAdmin(username: string, email: string, password: string) {
-      return this.http.post(this.myAppUrl + this.myApiUrl + 'register-admin', { username, email, password});
+      var data = {
+        userName: username,
+        email: email,
+        password: password
+      }
+      return this.http.post(this.myAppUrl + this.myApiUrl + 'register-admin', data);
     }
 
     getAdmins(): Observable<User[]> {
@@ -32,7 +42,6 @@ export class UserService {
     }
 
     deleteAdmin(id: string) {
-      console.log(this.myAppUrl + this.myApiUrl + id);
       return this.http.delete(this.myAppUrl + this.myApiUrl + id);
     }
 }

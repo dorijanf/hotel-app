@@ -1,7 +1,5 @@
 ﻿using HotelApp.API.Configuration;
 using System;
-using System.Text.Json.Serialization;
-
 namespace HotelApp.API.Models
 {
     public class ReservationDTO

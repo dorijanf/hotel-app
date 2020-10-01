@@ -3,10 +3,12 @@ using System.Linq;
 
 namespace HotelApp.API.DbContexts.Repositories
 {
+    /*
+     * This is a repository that contains a single method that retrieves a hotels status by id     
+     */
     public class HotelStatusRepository : IHotelStatusRepository
     {
         private readonly HotelAppContext _hotelAppContext;
-
         public HotelStatusRepository(HotelAppContext hotelAppContext)
         {
             _hotelAppContext = hotelAppContext;

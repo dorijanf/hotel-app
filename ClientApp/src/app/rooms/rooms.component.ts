@@ -5,6 +5,7 @@ import { RoomsService } from '../services/rooms.service';
 import { Room } from '../models/room';
 import { PaginationService } from '../services/pagination.service';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { City } from '../models/city';
 
 @Component({
   selector: 'app-rooms',
@@ -19,6 +20,7 @@ export class RoomsComponent implements OnInit {
   })
 
   rooms$: Observable<Room[]>;
+  cities$: Observable<City[]>;
   hotelIds: number[];
   pageNo: any = 1;
   pageNumber: boolean[] = [];
@@ -41,6 +43,7 @@ export class RoomsComponent implements OnInit {
 
   ngOnInit(): void {
     this.pageNumber[0] = true;
+    this.cities$ = this.roomsService.getCities();
     this.loadRooms();
   }
 
@@ -59,7 +62,7 @@ export class RoomsComponent implements OnInit {
       this.paginationService.exactPageList = this.exactPageList;
     } else {
       this.exactPageList = Number(tempPageData);
-      this.paginationService.exactPageList = this.exactPageList
+      this.paginationService.exactPageList = this.exactPageList;
     }
     this.paginationService.pageOnLoad();
     this.pageField = this.paginationService.pageField;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { Hotel } from '../models/hotel';
 import { HotelService } from '../services/hotel.service';
 import { ActivatedRoute } from '@angular/router';
@@ -8,6 +8,7 @@ import { RoomsService } from '../services/rooms.service';
 import { FormBuilder } from '@angular/forms';
 import { PaginationService } from '../services/pagination.service';
 import { faCaretUp, faCaretDown } from '@fortawesome/free-solid-svg-icons';
+import { map, subscribeOn, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-hotels',
@@ -23,6 +24,8 @@ export class HotelComponent implements OnInit {
   hotel$: Observable<Hotel>;
   rooms$: Observable<Room[]>;
   hotelId: number;
+  cityId: number;
+  cityName$: Observable<string>;
   pageNo: any = 1;
   pageNumber: boolean[] = [];
   orderBy: any = 'name';
@@ -37,7 +40,7 @@ export class HotelComponent implements OnInit {
   roomsPerPageResults = [10, 25, 50, 100];
   totalRoomsCount: any;
 
-  constructor(private hotelService: HotelService,
+  constructor(public hotelService: HotelService,
               private avRoute: ActivatedRoute,
               private roomsService: RoomsService,
               private fb: FormBuilder,
@@ -49,12 +52,20 @@ export class HotelComponent implements OnInit {
   }
   ngOnInit(): void {
     this.loadHotel();
+    this.hotel$.pipe(take(1)).subscribe(value => {
+      let cityId: BehaviorSubject<number> = new BehaviorSubject(value.cityId);
+      this.cityName$ = this.loadCity(this.hotelId, cityId.value);
+    });
     this.pageNumber[0] = true;
     this.loadHotelRooms();
   }
 
   loadHotel() {
     this.hotel$ = this.hotelService.getHotelById(this.hotelId);
+  }
+
+  loadCity(hotelId: number, cityId: number) {
+    return this.hotelService.getHotelCityName(hotelId, cityId).pipe(map(res => { return res.name; }));
   }
 
   loadHotelRooms() {
